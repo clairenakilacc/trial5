@@ -78,7 +78,6 @@ class EquipmentImport implements ToModel, WithHeadingRow
             'specifications' => $row['specifications'] ?? null,
             'facility_id' => $facility ? $facility->id : null,
             'category_id' => $category ? $category->id : null,
-            'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
             'status' => $row['status'] ?? null,
             'date_acquired' => $row['date_acquired'] ?? null,
             'supplier' => $row['supplier'] ?? null,
@@ -90,6 +89,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
             'serial_no' => $row['serial_no'] ?? null,
             'no_of_stocks' => $row['no_of_stocks'] ?? null,
             'restocking_point' => $row['restocking_point'] ?? null,
+            'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
             'person_liable' => $row['person_liable'] ?? null,
             'remarks' => $row['remarks'] ?? null,
         ];

@@ -24,7 +24,7 @@ class EquipmentResource extends Resource
     protected static ?string $model = Equipment::class;
 
     // protected static ?string $navigationGroup = 'Equipment';
-    protected static ?string $label = 'Equipments';
+    protected static ?string $label = 'Equipment';
     protected static ?string $navigationLabel = 'Equipment';
     public static ?string $slug = 'equipment';
 
@@ -52,18 +52,22 @@ class EquipmentResource extends Resource
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
+                                    ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
                                     ->placeholder('Brand Name of Equipment')
+                                    ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('specifications')
                                     ->placeholder('specifications, e.g., dimensions, weight, power')
                                     ->maxLength(255),
                                 Forms\Components\Select::make('facility_id')
                                     ->relationship('facility', 'name')
+                                    ->required()
                                     ->required(),
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'description')
+                                    ->required()
                                     ->required(),
                                 Forms\Components\Select::make('status')
                                     ->options([
@@ -75,7 +79,8 @@ class EquipmentResource extends Resource
                                         'Disposed' => 'Disposed',
                                         'Borrowed' => 'Borrowed',
                                     ])
-                                    ->native(false),
+                                    ->native(false)
+                                    ->required(),
                                 Forms\Components\TextInput::make('date_acquired')
                                     ->label('Date Acquired')
                                     ->placeholder('Refer to the equipment sticker.')
@@ -172,6 +177,7 @@ class EquipmentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('unit_no')
+                    ->label('Unit No.')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
@@ -180,7 +186,7 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('specifications')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
                     ->sortable(),
@@ -217,19 +223,24 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('item_no')
+                    ->label('Item No.')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('property_no')
                     ->searchable()
+                    ->label('Property No.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('control_no')
                     ->searchable()
+                    ->label('Control No.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('serial_no')
                     ->searchable()
+                    ->label('Serial No.')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('no_of_stocks')
+                    ->label('No. of Stocks')
                     ->searchable()
                     ->sortable()
                     ->formatStateUsing(function ($record) {
