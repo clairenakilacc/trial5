@@ -32,6 +32,7 @@ class StockUnitResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('description')
                     ->required()
+                    ->placeholder('Unit of equipment stock like in Tray, Carton, etc. ')
                     ->maxLength(255),
             ]);
     }

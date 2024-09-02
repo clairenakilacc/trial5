@@ -44,6 +44,7 @@ class FacilityResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->placeholder('Facility Name Displayed On The Door (e.g., CL1, CL2)')
+                                    ->required()
                                     ->maxLength(255),
                                 Forms\Components\Select::make('connection_type')
                                     ->options([
@@ -57,7 +58,8 @@ class FacilityResource extends Resource
                                         'Satellite' => 'Satellite',
                                         'DSL' => 'DSL',
                                         'Cable' => 'Cable',
-                                    ]),
+                                    ])
+                                    ->required(),
                                 Forms\Components\Select::make('facility_type')
                                     ->options([
                                         'Room' => 'Room',
@@ -66,23 +68,26 @@ class FacilityResource extends Resource
                                         'Incubation Hub' => 'Incubation Hub',
                                         'Robotic Hub' => 'Robotic Hub',
                                         'Hall' => 'Hall',
-                                    ]),
+                                    ])
+                                    ->required(),
                                 Forms\Components\Select::make('cooling_tools')
                                     ->options([
                                         'None' => 'None',
                                         'Aircon' => 'Aircon',
                                         'Ceiling Fan' => 'Ceiling Fan',
                                         'Both Aircon and Ceiling Fan' => 'Both Aircon and Ceiling Fan',
-                                    ]),
+                                    ])
+                                    ->required(),
                                 Forms\Components\Select::make('floor_level')
                                     ->options([
-                                        '1' => '1st Floor',
-                                        '2' => '2nd Floor',
-                                        '3' => '3rd Floor',
-                                        '4' => '4th Floor',
-                                    ]),
+                                        '1st Floor' => '1st Floor',
+                                        '2nd Floor' => '2nd Floor',
+                                        '3rd Floor' => '3rd Floor',
+                                        '4th Floor' => '4th Floor',
+                                    ])
+                                    ->required(),
                                 Forms\Components\TextInput::make('building')
-                                    ->disabled()
+                                    ->required()
                                     ->default('HIRAYA'),
                             ]),
                     ]),
@@ -91,15 +96,16 @@ class FacilityResource extends Resource
                         Forms\Components\FileUpload::make('facility_img')
                             ->image()
                             ->label('Facility Image')
+                            ->required()
                             ->imageEditor()
                             ->disk('public')
                             ->directory('facility'),
                     ]),
+                    
                 Section::make('Remarks')
                     ->schema([
                         Forms\Components\RichEditor::make('remarks')
                             ->placeholder('Anything that describes the facility (e.g., Computer Laboratory with space for 30 students)')
-                            ->required()
                             ->disableToolbarButtons([
                                 'attachFiles'
                             ])
@@ -165,6 +171,7 @@ class FacilityResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strip_tags($state))
                     ->html(),
             ])
             ->filters([

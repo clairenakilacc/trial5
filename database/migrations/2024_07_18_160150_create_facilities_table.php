@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cooling_tools');
             $table->string('floor_level');
             $table->string('building')->default('HIRAYA');
-            $table->string('remarks');
+            $table->string('remarks')->nullable();
             $table->string('facility_img');
             $table->timestamps();
         });
