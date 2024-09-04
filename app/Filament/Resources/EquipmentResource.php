@@ -114,7 +114,7 @@ class EquipmentResource extends Resource
                                 Forms\Components\Select::make('no_of_stocks')
                                     ->label('No. of Stocks')
                                     ->options(array_combine(range(1, 1000), range(1, 1000))),
-                                Forms\Components\Select::make('stock_unit')
+                                Forms\Components\Select::make('stock_unit_id')
                                     ->label('Stock Unit')
                                     ->relationship('stockUnit', 'description'),
                                 Forms\Components\Select::make('restocking_point')
@@ -248,7 +248,8 @@ class EquipmentResource extends Resource
                         return "{$record->no_of_stocks} {$stockUnitDescription}";
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('stock_unit.description')
+                Tables\Columns\TextColumn::make('stockUnit.description')
+                    ->label("Stock Unit")
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -285,14 +286,14 @@ class EquipmentResource extends Resource
 
 
 
-
-
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
+
+   
 
     public static function getPages(): array
     {

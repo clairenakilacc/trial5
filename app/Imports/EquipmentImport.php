@@ -69,8 +69,8 @@ class EquipmentImport implements ToModel, WithHeadingRow
         // Retrieve related models or set to null if not found
         $facility = Facility::where('name', $row['facility_id'] ?? '')->first();
         $category = Category::where('description', $row['category_id'] ?? '')->first();
-        $stock_unit = StockUnit::where('description', $row['stock_unit'] ?? '')->first();
-
+        $stock_unit = StockUnit::where('description', $row['stock_unit_id'] ?? '')->first();
+    
         // Prepare data array with null checks
         $data = [
             'unit_no' => $row['unit_no'] ?? null,
@@ -93,10 +93,14 @@ class EquipmentImport implements ToModel, WithHeadingRow
             'person_liable' => $row['person_liable'] ?? null,
             'remarks' => $row['remarks'] ?? null,
         ];
-
-        // Create and return new Equipment instance
-        $equipment = new Equipment($data);
-
-        return $equipment;
+    
+        // Check if the row has any meaningful data before inserting
+        if (!array_filter($data, fn($value) => !is_null($value) && $value !== '')) {
+            // If the row is blank, return null to skip insertion
+            return null;
+        }
+    
+        // Create and return new Equipment instance if the row has data
+        return new Equipment($data);
     }
-}
+}    
