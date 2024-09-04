@@ -1,3 +1,7 @@
+@php
+    use Carbon\Carbon;
+@endphp
+
 <div>
     <h3 class="text-lg font-semibold mb-4">Monitoring Records</h3>
     @if($monitorings->isEmpty())
@@ -8,7 +12,6 @@
             <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monitored By</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monitored Date</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
             </tr>
         </thead>
@@ -16,8 +19,7 @@
             @foreach($monitorings as $monitoring)
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->user->name ?? 'Unknown' }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->monitored_date }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->status }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ Carbon::parse($monitoring->monitored_date)->format('F j, Y') }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->remarks }}</td>
             </tr>
             @endforeach
