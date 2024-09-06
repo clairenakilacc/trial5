@@ -11,6 +11,7 @@ class ListBorrows extends ListRecords
 {
     use  \EightyNine\Approvals\Traits\HasApprovalHeaderActions;
     protected static string $resource = BorrowResource::class;
+    protected ?string $heading = 'Transferred to Borrows';
 
     protected function getHeaderActions(): array
     {

@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListEquipment extends ListRecords
 {
@@ -73,6 +74,7 @@ class ListEquipment extends ListRecords
 
         return $actions;
     }
+   
 
 
     public function getBreadcrumbs(): array
@@ -84,37 +86,37 @@ class ListEquipment extends ListRecords
     {
         return [
             Tab::make('All')
-                ->modifyQueryUsing(function ($query) {
-                    return $query; // No filtering, display all records
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->orderBy('created_at', 'desc'); 
                 }),
             Tab::make('Working')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Working');
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('status', 'Working')->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Repair')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'For Repair');
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('status', 'For Repair')->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Replacement')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'For Replacement');
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('status', 'For Replacement')->orderBy('created_at', 'desc');
                 }),
             Tab::make('Lost')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Lost');
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('status', 'Lost')->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Disposal')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'For Disposal');
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('status', 'For Disposal')->orderBy('created_at', 'desc');
                 }),
             Tab::make('Disposed')
-                ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Disposed');
+                ->modifyQueryUsing(function (Builder $query) {
+                    return $query->where('status', 'Disposed')->orderBy('created_at', 'desc');
                 }),
-            Tab::make('Borrowed')
+            /*Tab::make('Borrowed')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Borrowed');
-                }),
+                }),*/
         ];
     }
 }

@@ -87,6 +87,26 @@ class BorrowResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric(),
+                Tables\Columns\TextColumn::make('equipment.description'),
+                Tables\Columns\TextColumn::make('facility.name'),
+
+                /*Tables\Columns\TextColumn::make('equipment.unit_no')
+                ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('equipment.category'),
+                Tables\Columns\TextColumn::make('equipment.serial_no'),
+                Tables\Columns\TextColumn::make('equipment.property_no')
+                ->toggleable(isToggledHiddenByDefault: true),    
+                Tables\Columns\TextColumn::make('equipment.serial_no')
+                ->toggleable(isToggledHiddenByDefault: true),   
+                Tables\Columns\TextColumn::make('equipment.facility')
+                ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('equipment.status')
+                ->toggleable(isToggledHiddenByDefault: true),   
+                Tables\Columns\TextColumn::make('equipment.person_liable')
+                ->toggleable(isToggledHiddenByDefault: true),     
+                Tables\Columns\TextColumn::make('remarks')
+                ->toggleable(isToggledHiddenByDefault: true),*/
+
                 Tables\Columns\TextColumn::make('purpose'),
                 Tables\Columns\TextColumn::make('date_and_time_of_use'),
                 Tables\Columns\TextColumn::make('status')

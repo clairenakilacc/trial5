@@ -26,7 +26,7 @@ class BorrowListResource extends Resource
 
     protected static ?string $navigationGroup = 'Borrowing';
 
-    protected static ?string $navigationLabel = 'Borrow List';
+    protected static ?string $navigationLabel = 'Borrow Lists';
     protected static ?int $navigationSort = 3;
 
     public static function getNavigationBadge(): ?string
@@ -57,7 +57,7 @@ class BorrowListResource extends Resource
                     ->required()
                     ->helperText('Leave blank if inapplicable.'),
                 Forms\Components\Select::make('facility_id')
-                    ->relationship('facility', 'name')
+                    ->relationship('equipment', 'facility.name')
                     ->required()
                     ->helperText('Leave blank if inapplicable.'),
             ]);
@@ -97,7 +97,8 @@ class BorrowListResource extends Resource
                                 ->placeholder('Project Requirements etc.,'),
                             Forms\Components\DateTimePicker::make('date_and_time_of_use')
                                 ->native(false)
-                                ->placeholder('Aug. 09, 2024, 04:00:00')
+                                ->placeholder('Aug. 09, 2024, 04:00 PM') 
+                                ->format('M d, Y h:i A')
                                 ->closeOnDateSelection()
                                 ->required(),
                             Forms\Components\TextInput::make('college_department_office')
@@ -108,6 +109,7 @@ class BorrowListResource extends Resource
                         ]),
                         Forms\Components\FileUpload::make('request_form')
                             ->disk('public')
+                            ->required()
                             ->directory('request_forms')
                             ->preserveFilenames()
                     ])
@@ -136,7 +138,7 @@ class BorrowListResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Success')
-                                    ->body('Selected items have been added to your borrow list.')
+                                    ->body('Selected items have been transferred to borrows.')
                                     ->send();
                             } else {
                                 Notification::make()
@@ -169,24 +171,54 @@ class BorrowListResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Borrowed By')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('equipment.unit_no')
-                    ->label('Unit Number')
-                    ->searchable(),
+               
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Equipment')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('facility.name')
+                Tables\Columns\TextColumn::make('equipment.unit_no')
+                    ->label('Unit Number')
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.facility.name')
                     ->label('Facility')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.category.description')
+                    ->label('Category')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.status')
+                    ->label('Status')
+                    ->badge()
+                    ->searchable()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Working' => 'success',
+                        'For Repair' => 'warning',
+                        'For Replacement' => 'primary',
+                        'Lost' => 'danger',
+                        'For Disposal' => 'primary',
+                        'Disposed' => 'danger',
+                        'Borrowed' => 'indigo',
+                    }),
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.serial_no')
                     ->label('Serial Number')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.property_no')
                     ->label('Property Number')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.remarks')
+                    ->label('Remarks')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.person_liable')
+                    ->label('Person_liable')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
             ])
             ->filters([
@@ -291,7 +323,7 @@ class BorrowListResource extends Resource
         return [
             'index' => Pages\ListBorrowLists::route('/'),
             'create' => Pages\CreateBorrowList::route('/create'),
-            'edit' => Pages\EditBorrowList::route('/{record}/edit'),
+            //'edit' => Pages\EditBorrowList::route('/{record}/edit'),
         ];
     }
 }

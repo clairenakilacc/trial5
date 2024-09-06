@@ -77,7 +77,6 @@ class EquipmentResource extends Resource
                                         'Lost' => 'Lost',
                                         'For Disposal' => 'For Disposal',
                                         'Disposed' => 'Disposed',
-                                        'Borrowed' => 'Borrowed',
                                     ])
                                     ->native(false)
                                     ->required(),
@@ -293,7 +292,7 @@ class EquipmentResource extends Resource
         ];
     }
 
-   
+    
 
     public static function getPages(): array
     {
