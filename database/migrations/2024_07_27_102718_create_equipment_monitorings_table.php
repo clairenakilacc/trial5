@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('equipment_monitorings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('equipment_id')->constrained()->onDelete('cascade');
-            // $table->foreignId('facility_id')->constrained()->onDelete('cascade');
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
             $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade');
             $table->string('remarks')->nullable();
             $table->string('monitoring_status')->nullable();
             $table->string('monitored_date')->default(now()->format('M-d-y'));
-            $table->string('availability')->nullable();;
             $table->timestamps();
         });
     }

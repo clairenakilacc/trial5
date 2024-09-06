@@ -16,9 +16,9 @@ class EquipmentMonitoring extends Model
         'equipment_id',
         'monitored_by',
         'monitored_date',
-        'monitoring_status',
+        'status',
+        'facility_id',
         'remarks',
-        'availability',
     ];
 
     public function equipment()
