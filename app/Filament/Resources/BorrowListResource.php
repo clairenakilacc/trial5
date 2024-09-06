@@ -24,10 +24,10 @@ class BorrowListResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    protected static ?string $navigationGroup = 'Requests';
+    protected static ?string $navigationGroup = 'Borrowing';
 
-    protected static ?string $navigationLabel = 'Request List';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Borrow List';
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationBadge(): ?string
     {

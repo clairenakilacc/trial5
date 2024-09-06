@@ -21,6 +21,7 @@ class CriticalResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
 
     protected static ?string $navigationGroup = 'Importants';
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {

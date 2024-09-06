@@ -21,6 +21,7 @@ class ForRepairResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-shield-exclamation';
 
     protected static ?string $navigationGroup = 'Importants';
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {

@@ -141,7 +141,7 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             Tables\Actions\BulkAction::make('add_to_borrow_list')
-                ->label('Add to Request List')
+                ->label('Add to Borrow List')
                 ->icon('heroicon-o-shopping-cart')
                 ->action(function (Collection $records) {
                     foreach ($records as $record) {

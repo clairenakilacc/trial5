@@ -26,6 +26,7 @@ class FacilitySummaryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Monitoring';
     protected static ?string $navigationLabel = 'Facility Monitoring';
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationBadge(): ?string
     {

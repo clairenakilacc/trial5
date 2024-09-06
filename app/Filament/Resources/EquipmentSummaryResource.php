@@ -29,6 +29,7 @@ class EquipmentSummaryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
     protected static ?string $navigationLabel = 'Equipment Monitoring';
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationBadge(): ?string
     {

@@ -20,6 +20,7 @@ class StockUnitResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
     protected static ?string $navigationGroup = 'Classification';
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationBadge(): ?string
     {

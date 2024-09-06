@@ -45,7 +45,7 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
                 // \EightyNine\Approvals\ApprovalPlugin::make(),
 
             ])
