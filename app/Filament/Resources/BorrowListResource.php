@@ -86,12 +86,16 @@ class BorrowListResource extends Resource
                         Forms\Components\Grid::make([
                             'default' => 2,
                         ])->schema([
-                            Forms\Components\DatePicker::make('date')
+                           /* Forms\Components\DatePicker::make('date')
                                 ->format('d/m/Y')
-                                ->placeholder('01/01/2024')
                                 ->disabled()
+                                ->placeholder(now()->format('d/m/Y'))
                                 ->default(now())
-                                ->required(),
+                                ->required()
+                                ->afterStateHydrated(function ($component, $state) {
+                                    // Always set the current date
+                                    $component->state(now()->format('d/m/Y'));
+                                }),*/
                             Forms\Components\TextInput::make('purpose')
                                 ->required()
                                 ->placeholder('Project Requirements etc.,'),
@@ -232,11 +236,11 @@ class BorrowListResource extends Resource
                         ->icon('heroicon-o-arrow-right')
                         ->form([
                             Forms\Components\Grid::make([
-                                'default' => 2,
+                                'default' => 1,
                             ])
                                 ->schema([
                                     Forms\Components\DatePicker::make('date')
-                                        ->format('d/m/Y')
+                                        ->format('m/d/Y')
                                         ->placeholder('01/01/2024')
                                         ->disabled()
                                         ->default(now())
@@ -289,7 +293,7 @@ class BorrowListResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Success')
-                                    ->body('Selected items have been added to your borrow list.')
+                                    ->body('Selected items have been transferred to borrows.')
                                     ->send();
                             } else {
                                 Notification::make()

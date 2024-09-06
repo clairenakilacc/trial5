@@ -85,10 +85,64 @@ class BorrowResource extends Resource
                 }
             })
             ->columns([
+                Tables\Columns\TextColumn::make('borrowlist.date')
+                    ->label('Date Created')
+                    ->searchable()
+                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y')) ,              
+
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric(),
-                Tables\Columns\TextColumn::make('equipment.description'),
-                Tables\Columns\TextColumn::make('facility.name'),
+                    ->label('Borrowed By')
+                    ->searchable(),
+                
+                Tables\Columns\TextColumn::make('equipment.description')
+                    ->label('Equipment')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.unit_no')
+                    ->label('Unit Number')
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.facility.name')
+                    ->label('Facility')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.category.description')
+                    ->label('Category')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.status')
+                    ->label('Status')
+                    ->badge()
+                    ->searchable()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Working' => 'success',
+                        'For Repair' => 'warning',
+                        'For Replacement' => 'primary',
+                        'Lost' => 'danger',
+                        'For Disposal' => 'primary',
+                        'Disposed' => 'danger',
+                        'Borrowed' => 'indigo',
+                    }),
+                Tables\Columns\TextColumn::make('equipment.control_no')
+                    ->label('Control Number')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.serial_no')
+                    ->label('Serial Number')
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.property_no')
+                    ->label('Property Number')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.remarks')
+                    ->label('Remarks')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.person_liable')
+                    ->label('Person_liable')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->searchable(),
+                
+                
+               
 
                 /*Tables\Columns\TextColumn::make('equipment.unit_no')
                 ->toggleable(isToggledHiddenByDefault: true),
@@ -246,7 +300,7 @@ class BorrowResource extends Resource
         return [
             'index' => Pages\ListBorrows::route('/'),
             'create' => Pages\CreateBorrow::route('/create'),
-            'edit' => Pages\EditBorrow::route('/{record}/edit'),
+            //'edit' => Pages\EditBorrow::route('/{record}/edit'),
         ];
     }
 }

@@ -34,4 +34,8 @@ class BorrowList extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function borrow()
+    {
+        return $this->belongsTo(Borrow::class);
+    }
 }

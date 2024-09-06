@@ -43,4 +43,8 @@ class Borrow extends ApprovableModel
     {
         return $this->belongsTo(Facility::class);
     }
+    public function borrowList()
+    {
+        return $this->belongsTo(BorrowList::class);
+    }
 }
