@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('facility_id')->constrained()->onDelete('cascade');
             $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade');
             $table->string('remarks')->nullable();
-            $table->string('monitoring_status')->nullable();
+            $table->string('status')->nullable();
             $table->string('monitored_date')->default(now()->format('M-d-y'));
             $table->timestamps();
         });

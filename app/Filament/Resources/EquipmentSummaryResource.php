@@ -253,7 +253,7 @@ class EquipmentSummaryResource extends Resource
         return [
             'index' => Pages\ListEquipmentSummaries::route('/'),
             'create' => Pages\CreateEquipmentSummary::route('/create'),
-            'edit' => Pages\EditEquipmentSummary::route('/{record}/edit'),
+            //'edit' => Pages\EditEquipmentSummary::route('/{record}/edit'),
         ];
     }
 }

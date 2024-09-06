@@ -86,6 +86,8 @@ class FacilitySummaryResource extends Resource
                         ->modalContent(function ($record) {
                             $facilityId = $record->id;
 
+                            
+
                             $monitorings = FacilityMonitoring::where('facility_id', $facilityId)
                                 ->with('user')
                                 ->get();
@@ -170,7 +172,7 @@ class FacilitySummaryResource extends Resource
         return [
             'index' => Pages\ListFacilitySummaries::route('/'),
             'create' => Pages\CreateFacilitySummary::route('/create'),
-            'edit' => Pages\EditFacilitySummary::route('/{record}/edit'),
+            //'edit' => Pages\EditFacilitySummary::route('/{record}/edit'),
         ];
     }
 }
