@@ -95,17 +95,17 @@ class BorrowResource extends Resource
                     ->searchable(),
                 
                 Tables\Columns\TextColumn::make('equipment.description')
-                    ->label('Equipment')
+                    ->label('Requested Equipment')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('facility.name')
+                    ->label('Assigned/Requested Facility')
+                    ->searchable()
+                    ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
+
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('facility.name')
-                    ->label('Facility')
-                    ->searchable()
-                    ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
-
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
                     ->searchable(),
