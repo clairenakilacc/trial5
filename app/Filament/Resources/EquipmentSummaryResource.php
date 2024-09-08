@@ -179,7 +179,6 @@ class EquipmentSummaryResource extends Resource
                                         ->label('Monitoring Date')
                                         ->required()
                                         ->default(now())
-                                        ->disabled()
                                         ->format('Y-m-d'),
 
                                     Forms\Components\Select::make('status')

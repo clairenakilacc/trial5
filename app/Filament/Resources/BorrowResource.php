@@ -85,8 +85,8 @@ class BorrowResource extends Resource
                 }
             })
             ->columns([
-                Tables\Columns\TextColumn::make('borrowlist.date')
-                    ->label('Date Created')
+                Tables\Columns\TextColumn::make('date')
+                    ->label('Date ')
                     ->searchable()
                     ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y')) ,              
 
@@ -193,7 +193,7 @@ class BorrowResource extends Resource
                             $url = asset('storage/' . $record->request_form);
 
                             // Redirect to the PDF URL to trigger the download
-                            return redirect()->away($url);
+                           return redirect()->away($url);
                         })
                         ->color('info'),
                     Tables\Actions\Action::make('updateStatus')

@@ -86,27 +86,35 @@ class BorrowListResource extends Resource
                         Forms\Components\Grid::make([
                             'default' => 2,
                         ])->schema([
-                           /* Forms\Components\DatePicker::make('date')
-                                ->format('d/m/Y')
-                                ->disabled()
-                                ->placeholder(now()->format('d/m/Y'))
-                                ->default(now())
+                            Forms\Components\DatePicker::make('date')
+                                ->native(false)
+                                ->format('M d, Y h:i A')
+                                ->closeOnDateSelection(false)
+                                ->withoutSeconds()
+                                ->default(now('Asia/Manila'))                               
                                 ->required()
-                                ->afterStateHydrated(function ($component, $state) {
-                                    // Always set the current date
-                                    $component->state(now()->format('d/m/Y'));
-                                }),*/
+                                ->disabled()
+                                ->extraAttributes([
+                                    'data-clock-format' => '12', 
+                                ]),
+                                       
                             Forms\Components\TextInput::make('purpose')
                                 ->required()
+                                ->default('Course/Class Lecture')
                                 ->placeholder('Project Requirements etc.,'),
                             Forms\Components\DateTimePicker::make('date_and_time_of_use')
                                 ->native(false)
-                                ->placeholder('Aug. 09, 2024, 04:00 PM') 
                                 ->format('M d, Y h:i A')
-                                ->closeOnDateSelection()
-                                ->required(),
+                                ->closeOnDateSelection(false)
+                                ->withoutSeconds()
+                                ->default(now('Asia/Manila'))                               
+                                ->required()
+                                ->extraAttributes([
+                                    'data-clock-format' => '12', 
+                                ]),
                             Forms\Components\TextInput::make('college_department_office')
                                 ->required()
+                                ->default('CCIS')
                                 ->placeholder('CCIS'),
                             Forms\Components\View::make('download_link')
                                 ->view('components.download-link'),
@@ -240,27 +248,39 @@ class BorrowListResource extends Resource
                             ])
                                 ->schema([
                                     Forms\Components\DatePicker::make('date')
-                                        ->format('m/d/Y')
-                                        ->placeholder('01/01/2024')
-                                        ->disabled()
-                                        ->default(now())
-                                        ->required(),
+                                    ->native(false)
+                                    ->format('M d, Y h:i A')
+                                    ->closeOnDateSelection(false)
+                                    ->withoutSeconds()
+                                    ->default(now('Asia/Manila'))                               
+                                    ->required()
+                                    ->disabled()
+                                    ->extraAttributes([
+                                        'data-clock-format' => '12', 
+                                    ]),
                                     Forms\Components\TextInput::make('purpose')
                                         ->required()
+                                        ->default('Course/Class Lecture')
                                         ->placeholder('Project Requirements etc.,'),
                                     Forms\Components\DateTimePicker::make('date_and_time_of_use')
-                                        ->native(false)
-                                        ->placeholder('Aug. 09, 2024, 04:00:00')
-                                        ->closeOnDateSelection()
-                                        ->required(),
+                                    ->native(false)
+                                    ->format('M d, Y h:i A')
+                                    ->closeOnDateSelection(false)
+                                    ->withoutSeconds()
+                                    ->default(now('Asia/Manila'))                               
+                                    ->required()
+                                    ->extraAttributes([
+                                        'data-clock-format' => '12', 
+                                    ]),
                                     Forms\Components\TextInput::make('college_department_office')
                                         ->required()
-                                        ->placeholder('CCIS'),
+                                        ->default('CCIS'),
                                     Forms\Components\View::make('download_link')
                                         ->view('components.download-link'),
                                 ]),
                             Forms\Components\FileUpload::make('request_form')
                                 ->disk('public')
+                                ->required()
                                 ->directory('request_forms')
                                 ->preserveFilenames()
                         ])
