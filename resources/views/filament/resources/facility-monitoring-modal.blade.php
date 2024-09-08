@@ -15,8 +15,8 @@
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-            @foreach($monitorings as $monitoring)
-            <tr>
+        @foreach($monitorings->sortByDesc('monitored_date') as $monitoring)
+        <tr>
                 <td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->user->name ?? 'Unknown' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($monitoring->monitored_date)->format('F d, Y') }}</td>
                 <!--<td class="px-6 py-4 whitespace-nowrap">{{ $monitoring->status }}</td>-->
