@@ -263,6 +263,12 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+               
+                
             ])
             ->filters([
                 // Define your filters here
