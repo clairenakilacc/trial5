@@ -193,9 +193,11 @@ class BorrowListResource extends Resource
                     ->label('Unit Number')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('equipment.facility.name')
+                Tables\Columns\TextColumn::make('facility.name')
                     ->label('Facility')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
+
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
                     ->searchable(),

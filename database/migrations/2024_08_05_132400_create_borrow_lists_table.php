@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('borrow_lists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('equipment_id')->constrained()->onDelete('cascade');
+            $table->foreignId('equipment_id')->nullable()->change()->constrained()->onDelete('cascade');            $table->unsignedBigInteger('equipment_id')->nullable()->change();
             $table->foreignId('facility_id')->constrained()->onDelete('cascade');
             $table->date('date')->nullable();
             $table->string('purpose')->nullable();

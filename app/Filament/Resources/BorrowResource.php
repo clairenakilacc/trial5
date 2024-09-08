@@ -101,9 +101,11 @@ class BorrowResource extends Resource
                     ->label('Unit Number')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('equipment.facility.name')
+                Tables\Columns\TextColumn::make('facility.name')
                     ->label('Facility')
-                    ->searchable(),
+                    ->searchable()
+                    ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
+
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
                     ->searchable(),
@@ -144,22 +146,7 @@ class BorrowResource extends Resource
                 
                
 
-                /*Tables\Columns\TextColumn::make('equipment.unit_no')
-                ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('equipment.category'),
-                Tables\Columns\TextColumn::make('equipment.serial_no'),
-                Tables\Columns\TextColumn::make('equipment.property_no')
-                ->toggleable(isToggledHiddenByDefault: true),    
-                Tables\Columns\TextColumn::make('equipment.serial_no')
-                ->toggleable(isToggledHiddenByDefault: true),   
-                Tables\Columns\TextColumn::make('equipment.facility')
-                ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('equipment.status')
-                ->toggleable(isToggledHiddenByDefault: true),   
-                Tables\Columns\TextColumn::make('equipment.person_liable')
-                ->toggleable(isToggledHiddenByDefault: true),     
-                Tables\Columns\TextColumn::make('remarks')
-                ->toggleable(isToggledHiddenByDefault: true),*/
+            
 
                 Tables\Columns\TextColumn::make('purpose'),
                 Tables\Columns\TextColumn::make('date_and_time_of_use'),

@@ -130,8 +130,9 @@ class FacilityResource extends Resource
                             [
                                 'user_id' => auth()->id(),
                                 'facility_id' => $record->id, // Correctly reference the facility ID here
-                            ]
-                        );
+                                ]
+                            );
+                        
                     }
 
                     Notification::make()

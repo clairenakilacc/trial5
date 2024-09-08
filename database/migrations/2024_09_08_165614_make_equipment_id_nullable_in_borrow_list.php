@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('equipment_monitorings', function (Blueprint $table) {
-            $table->renameColumn('monitoring_status', 'status');
+        Schema::table('borrow_lists', function (Blueprint $table) {
+            $table->unsignedBigInteger('equipment_id')->nullable()->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('equipment_monitorings', function (Blueprint $table) {
-            $table->renameColumn('status', 'monitoring_status');
+         Schema::table('borrow_lists', function (Blueprint $table) {
+            $table->unsignedBigInteger('equipment_id')->nullable(false)->change();
         });
     }
 };
