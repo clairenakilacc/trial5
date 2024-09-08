@@ -140,7 +140,7 @@ class EquipmentResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             Tables\Actions\BulkAction::make('add_to_borrow_list')
-                ->label('Add to Borrow List')
+                ->label('Add to Borrow Lists')
                 ->icon('heroicon-o-shopping-cart')
                 ->action(function (Collection $records) {
                     foreach ($records as $record) {
@@ -158,14 +158,14 @@ class EquipmentResource extends Resource
                     Notification::make()
                         ->success()
                         ->title('Success')
-                        ->body('Selected items have been added to your borrow list.')
+                        ->body('Selected items have been added to your borrow lists.')
                         ->send();
                 })
                 ->color('primary')
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
                 ->modalHeading('Add to Borrow List')
-                ->modalDescription('Confirm to add selected items to your borrow list'),
+                ->modalDescription('Confirm to add selected items to your borrow lists'),
         ];
 
         // Conditionally add ExportBulkAction
