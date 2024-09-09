@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('status')->default('Unreturned');
             $table->string('remarks')->nullable();
             
+            
 
             $table->timestamps();
         });

@@ -14,6 +14,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class BorrowResource extends Resource
 {
@@ -86,32 +87,50 @@ class BorrowResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('date')
-                    ->label('Date ')
+                    ->label('Date Created')
                     ->searchable()
-                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y')) ,              
+                    ->sortable()
+                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y'))              
+                    ->toggleable(isToggledHiddenByDefault: false),
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Borrowed By')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+
                 
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Requested Equipment')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+
                 Tables\Columns\TextColumn::make('facility.name')
                     ->label('Assigned/Requested Facility')
                     ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+
                     ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
 
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.status')
                     ->label('Status')
+                    ->sortable()
                     ->badge()
+                    ->toggleable(isToggledHiddenByDefault: false)
+
                     ->searchable()
                     ->color(fn(string $state): string => match ($state) {
                         'Working' => 'success',
@@ -124,39 +143,45 @@ class BorrowResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('equipment.control_no')
                     ->label('Control Number')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.serial_no')
                     ->label('Serial Number')
                     ->toggleable(isToggledHiddenByDefault: false)
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.property_no')
                     ->label('Property Number')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.remarks')
                     ->label('Remarks')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.person_liable')
                     ->label('Person_liable')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                
-                
-               
 
-            
-
-                Tables\Columns\TextColumn::make('purpose'),
-                Tables\Columns\TextColumn::make('date_and_time_of_use'),
+                Tables\Columns\TextColumn::make('request_form')
+                ->sortable(),
+                Tables\Columns\TextColumn::make('purpose')
+                ->searchable()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('date_and_time_of_use')
+                ->searchable()
+                ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Availability')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('remarks'),
                 Tables\Columns\TextColumn::make('returned_date'),
-                Tables\Columns\TextColumn::make('request_form'),
                 // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
             ->filters([
@@ -213,7 +238,9 @@ class BorrowResource extends Resource
                                         ->label('Returned Date')
                                         ->visible(fn(callable $get) => $get('status') === 'Returned')
                                         ->required(fn(callable $get) => $get('status') === 'Returned')
-                                        ->placeholder('Select return date'),
+                                        ->placeholder('Select return date')
+                                        ->default(fn() => now('Asia/Manila')),
+  
                                     Forms\Components\TextInput::make('remarks')
                                         ->visible(fn(callable $get) => $get('status') === 'Returned')
                                         ->required(fn(callable $get) => $get('status') === 'Returned')
@@ -258,10 +285,24 @@ class BorrowResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('approve')
+                        ->label('Approve')
+                        ->action(function (Illuminate\Database\Eloquent\Collection $records) {
+                            foreach ($records as $record) {
+                                $record->update(['request_status' => 'Approved']);
+                            }
+            
+                            Notification::make()
+                                ->success()
+                                ->title('Approved')
+                                ->body('Selected records have been approved.')
+                                ->send();
+                        })
+                        ->color('success'),
                 ]),
-            ]); // Filter borrows for panel users;
-    }
-
+            ]);
+        }            
+                
     // protected static function getTableQuery(): Builder
     // {
     //     $query = parent::getTableQuery();
@@ -274,7 +315,7 @@ class BorrowResource extends Resource
 
     //     return $query;
     // }
-
+            
     public static function getRelations(): array
     {
         return [

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('purpose')->nullable();
             $table->string('date_and_time_of_use')->nullable();
             $table->string('college_department_office')->nullable();
+            
             $table->timestamps();
         });
     }
