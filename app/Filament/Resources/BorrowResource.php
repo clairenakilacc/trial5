@@ -181,7 +181,9 @@ class BorrowResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('remarks'),
-                Tables\Columns\TextColumn::make('returned_date'),
+                Tables\Columns\TextColumn::make('returned_date')
+                ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y')) ,             
+
                 // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
             ->filters([
@@ -258,7 +260,7 @@ class BorrowResource extends Resource
 
                             // Update the record with the new status, returned date, and remarks
                             $record->update([
-                                'status' => $data['status'],
+                                'request_status' => $data['request_status'],
                                 'returned_date' => $data['status'] === 'Returned' ? $data['returned_date'] : null,
                                 'remarks' => $data['status'] === 'Returned' ? $data['remarks'] : null,
                             ]);

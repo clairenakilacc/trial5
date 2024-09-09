@@ -122,7 +122,7 @@ class FacilityResource extends Resource
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
             Tables\Actions\BulkAction::make('add_to_borrow_list')
-                ->label('Add to Request List')
+                ->label('Add to Borrow Lists')
                 ->icon('heroicon-o-shopping-cart')
                 ->action(function (Collection $records) {
                     foreach ($records as $record) {
@@ -138,13 +138,13 @@ class FacilityResource extends Resource
                     Notification::make()
                         ->success()
                         ->title('Success')
-                        ->body('Selected facilities have been added to your borrow list.')
+                        ->body('Selected facilities have been added to your borrow lists.')
                         ->send();
                 })
                 ->color('primary')
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Borrow List')
+                ->modalHeading('Add to Borrow Lists')
                 ->modalDescription('Confirm to add selected facilities to your borrow list'),
         ];
 
@@ -215,20 +215,27 @@ class FacilityResource extends Resource
                 ImageEntry::make('facility_img')
                     ->label('Image')
                     ->columnSpanFull()
-                    ->width(200)
-                    ->height(200),
+                    ->width(700)
+                    ->height(700),
+                      
                 Components\Grid::make([
-                    'default'   => 1,
-                    'sm'        => 2,
-                    'md'        => 3,
+                    'default'   => 3,
+                    'sm'        => 4,
+                    'md'        => 6,
                 ])
                     ->schema([
-                        TextEntry::make('name'),
-                        TextEntry::make('connection_type'),
-                        TextEntry::make('cooling_tools'),
-                        TextEntry::make('floor_level'),
-                        TextEntry::make('building'),
+                        TextEntry::make('name')
+                        ->extraAttributes(['class' => 'text-center']),
+                        TextEntry::make('connection_type')
+                        ->extraAttributes(['class' => 'text-center']),
+                        TextEntry::make('cooling_tools')
+                        ->extraAttributes(['class' => 'text-center']),
+                        TextEntry::make('floor_level')
+                        ->extraAttributes(['class' => 'text-center']),
+                        TextEntry::make('building')
+                        ->extraAttributes(['class' => 'text-center']),
                         TextEntry::make('remarks')
+                        ->extraAttributes(['class' => 'text-center'])
                             ->html(),
                     ])
 
