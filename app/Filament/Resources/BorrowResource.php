@@ -172,6 +172,7 @@ class BorrowResource extends Resource
                 ->sortable(),
                 Tables\Columns\TextColumn::make('date_and_time_of_use')
                 ->searchable()
+                ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
                 ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Availability')
@@ -184,7 +185,8 @@ class BorrowResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
                 Tables\Columns\TextColumn::make('returned_date')
-                ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y')) ,             
+                ->label('Date Returned')
+                ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A')),
 
                 // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
@@ -226,6 +228,8 @@ class BorrowResource extends Resource
                                             'Unreturned' => 'Unreturned',
                                         ])
                                         ->reactive()
+                                        ->default('Unreturned')
+                                        ->default(fn($record) => $record->status)
                                         ->required(),
                                     Forms\Components\Select::make('request_status')
                                         ->label('Request Status')
@@ -240,14 +244,16 @@ class BorrowResource extends Resource
                                         ->disabled(fn(callable $get) => $get('record.request_status') === 'Approved')
                                         ->default(fn($record) => $record->request_status),
                                     
-                                    Forms\Components\DatePicker::make('returned_date')
+                                    Forms\Components\DateTimePicker::make('returned_date')
                                         ->label('Returned Date')
                                         ->visible(fn(callable $get) => $get('status') === 'Returned')
                                         ->required(fn(callable $get) => $get('status') === 'Returned')
                                         ->placeholder('Select return date')
                                         ->default(fn() => now('Asia/Manila')),
+                                        
   
                                     Forms\Components\TextInput::make('remarks')
+                                        ->default(fn($record) => $record->remarks !== 'test' ? $record->remarks : '')
                                         ->visible(fn(callable $get) => $get('status') === 'Returned')
                                         ->required(fn(callable $get) => $get('status') === 'Returned')
                                         ->columnSpanFull()
@@ -265,6 +271,7 @@ class BorrowResource extends Resource
                             // Update the record with the new status, returned date, and remarks
                             $record->update([
                                 'request_status' => $data['request_status'],
+                                'status' => $data['status'],
                                 'returned_date' => $data['status'] === 'Returned' ? $data['returned_date'] : null,
                                 'remarks' => $data['status'] === 'Returned' ? $data['remarks'] : null,
                             ]);

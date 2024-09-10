@@ -307,7 +307,6 @@ class BorrowListResource extends Resource
                                             'date_and_time_of_use' => $data['date_and_time_of_use'],
                                             'college_department_office' => $data['college_department_office'],
                                             'borrowed_date' => now(),
-                                            'remarks' => 'test',
                                         ]);
 
                                         $borrowList->delete();
