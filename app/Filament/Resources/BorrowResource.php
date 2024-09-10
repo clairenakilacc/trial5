@@ -87,10 +87,12 @@ class BorrowResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('date')
-                    ->label('Date Created')
+                    ->label('Date Borrowed')
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y'))              
+                    
+                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
+                    
                     ->toggleable(isToggledHiddenByDefault: false),
 
                 Tables\Columns\TextColumn::make('user.name')

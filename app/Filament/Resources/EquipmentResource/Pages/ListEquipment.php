@@ -21,14 +21,13 @@ class ListEquipment extends ListRecords
     protected function getHeaderActions(): array
     {
         $user = auth()->user();
-        $isPanelUser = $user->hasRole('panel_user');
-
+        $isAuthorized = $user->hasRole('admin') || $user->hasRole('superadmin');
         $actions = [
             Actions\CreateAction::make()
                 ->label('Create'),
         ];
 
-        if (!$isPanelUser) {
+        if ($isAuthorized) {
 
             $actions[] = Action::make('importEquipment')
                 ->label('Import')

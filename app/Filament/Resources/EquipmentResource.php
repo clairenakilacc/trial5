@@ -52,7 +52,6 @@ class EquipmentResource extends Resource
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
-                                    ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
                                     ->placeholder('Brand Name of Equipment')

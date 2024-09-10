@@ -86,16 +86,18 @@ class BorrowListResource extends Resource
                         Forms\Components\Grid::make([
                             'default' => 2,
                         ])->schema([
-                            Forms\Components\DatePicker::make('date')
+                            Forms\Components\DateTimePicker::make('date')
+                                
                                 ->native(false)
                                 ->format('M d, Y h:i A')
                                 ->closeOnDateSelection(false)
                                 ->withoutSeconds()
-                                ->default(now('Asia/Manila'))                               
+                                ->timezone('Asia/Manila') // Set timezone to Asia/Manila
+                                ->default(now('Asia/Manila')) // Set default to current time in Manila
                                 ->required()
                                 ->disabled()
                                 ->extraAttributes([
-                                    'data-clock-format' => '12', 
+                                    'data-clock-format' => '12',
                                 ]),
                                        
                             Forms\Components\TextInput::make('purpose')
@@ -251,7 +253,7 @@ class BorrowListResource extends Resource
                                 'default' => 1,
                             ])
                                 ->schema([
-                                    Forms\Components\DatePicker::make('date')
+                                    Forms\Components\DateTimePicker::make('date')
                                     ->native(false)
                                     ->format('M d, Y h:i A')
                                     ->closeOnDateSelection(false)

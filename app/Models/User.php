@@ -14,9 +14,9 @@ use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, HasPanelShield;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
 
     // public function canAccessPanel(Panel $panel): bool
