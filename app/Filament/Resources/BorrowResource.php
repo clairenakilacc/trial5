@@ -104,6 +104,7 @@ class BorrowResource extends Resource
                     ->label('Requested Equipment')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->toggleable(isToggledHiddenByDefault: false),
 
                 Tables\Columns\TextColumn::make('facility.name')
@@ -111,8 +112,7 @@ class BorrowResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false)
-
-                    ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
+                    ->formatStateUsing(fn ($state) => $state ? strtoupper($state) : 'N/A'),
 
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
@@ -156,11 +156,7 @@ class BorrowResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('equipment.remarks')
-                    ->label('Remarks')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+               
                 Tables\Columns\TextColumn::make('equipment.person_liable')
                     ->label('Person_liable')
                     ->sortable()
@@ -168,7 +164,9 @@ class BorrowResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('request_form')
-                ->sortable(),
+                ->sortable()
+                ->formatStateUsing(fn (string $state): string => basename($state)),
+
                 Tables\Columns\TextColumn::make('purpose')
                 ->searchable()
                 ->sortable(),
@@ -180,7 +178,11 @@ class BorrowResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('request_status'),
-                Tables\Columns\TextColumn::make('remarks'),
+                Tables\Columns\TextColumn::make('remarks')
+                ->label('Remarks')
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->searchable(),
                 Tables\Columns\TextColumn::make('returned_date')
                 ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('F j, Y')) ,             
 
@@ -235,7 +237,9 @@ class BorrowResource extends Resource
                                         ])
                                         ->reactive()
                                         ->required()
+                                        ->disabled(fn(callable $get) => $get('record.request_status') === 'Approved')
                                         ->default(fn($record) => $record->request_status),
+                                    
                                     Forms\Components\DatePicker::make('returned_date')
                                         ->label('Returned Date')
                                         ->visible(fn(callable $get) => $get('status') === 'Returned')
@@ -254,8 +258,8 @@ class BorrowResource extends Resource
                             Log::info('Updating record', [
                                 'record_id' => $record->id,
                                 'status' => $data['status'],
-                                'returned_date' => $data['returned_date'],
-                                'remarks' => $data['remarks'],
+                                'returned_date' => $data['returned_date']?? null,
+                                'remarks' => $data['remarks']?? null,
                             ]);
 
                             // Update the record with the new status, returned date, and remarks
@@ -287,20 +291,7 @@ class BorrowResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('approve')
-                        ->label('Approve')
-                        ->action(function (Illuminate\Database\Eloquent\Collection $records) {
-                            foreach ($records as $record) {
-                                $record->update(['request_status' => 'Approved']);
-                            }
-            
-                            Notification::make()
-                                ->success()
-                                ->title('Approved')
-                                ->body('Selected records have been approved.')
-                                ->send();
-                        })
-                        ->color('success'),
+                   
                 ]),
             ]);
         }            

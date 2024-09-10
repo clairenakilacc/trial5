@@ -43,6 +43,8 @@ class StockUnitResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('description')
+                ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

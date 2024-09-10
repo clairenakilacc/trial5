@@ -47,6 +47,7 @@ class FacilitySummaryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('connection_type')
                     ->label('Connection Type')

@@ -178,16 +178,20 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit No.')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('specifications')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category.description')
                     ->searchable()
@@ -212,6 +216,7 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('supplier')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('amount')
                     ->searchable()
@@ -259,9 +264,11 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('person_liable')
                     ->searchable()
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('remarks')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->searchable()

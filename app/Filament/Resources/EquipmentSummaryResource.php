@@ -48,9 +48,11 @@ class EquipmentSummaryResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category.description')
                     ->searchable()

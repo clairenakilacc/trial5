@@ -188,6 +188,7 @@ class BorrowListResource extends Resource
                
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Equipment')
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
@@ -195,6 +196,7 @@ class BorrowListResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->label('Facility')
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->searchable()
                     ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
 

@@ -157,6 +157,7 @@ class FacilityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
+                    ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('connection_type')
                     ->searchable(),
@@ -215,8 +216,8 @@ class FacilityResource extends Resource
                 ImageEntry::make('facility_img')
                     ->label('Image')
                     ->columnSpanFull()
-                    ->width(700)
-                    ->height(700),
+                    ->width(400)
+                    ->height(400),
                       
                 Components\Grid::make([
                     'default'   => 3,
