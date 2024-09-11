@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             //$table->foreignId('equipment_id')->nullable()->change()->constrained()->onDelete('cascade');           
-            $table->unsignedBigInteger('equipment_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('equipment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('facility_id')->constrained()->onDelete('cascade');
             $table->date('date')->nullable();
             $table->string('purpose')->nullable();
