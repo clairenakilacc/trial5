@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('CCIS ComLab System')
             // ->breadcrumbs(false)
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([

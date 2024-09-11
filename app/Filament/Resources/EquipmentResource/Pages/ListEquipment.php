@@ -11,8 +11,6 @@ use Filament\Forms\Components\FileUpload;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
 
 class ListEquipment extends ListRecords
 {
@@ -20,48 +18,26 @@ class ListEquipment extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        $user = auth()->user();
-        $isAuthorized = $user->hasRole('admin') || $user->hasRole('superadmin');
+        $user = auth()->user(); // Retrieve the currently authenticated user
+        $isPanelUser = $user->hasRole('panel_user'); // Check if the user has the 'panel_user' role
+
         $actions = [
             Actions\CreateAction::make()
                 ->label('Create'),
         ];
 
-        if ($isAuthorized) {
-
+        if (!$isPanelUser) {
+            // Only add the import action if the user is not a panel_user
             $actions[] = Action::make('importEquipment')
                 ->label('Import')
                 ->color('success')
                 ->button()
-                // ->form([
-                //     FileUpload::make('attachment'),
-                // ])
                 ->form([
-                    FileUpload::make('attachment')
-                        ->disk('local')
-                        ->directory('imports') // Store in 'imports' folder within storage/app
-                        ->preserveFilenames(),
+                    FileUpload::make('attachment'),
                 ])
-                // ->action(function (array $data) {
-                //     $file = public_path('storage/' . $data['attachment']);
-
-                //     // dd($file);
-
-                //     Excel::import(new EquipmentImport, $file);
-
-                //     Notification::make()
-                //         ->title('Equipment Imported')
-                //         ->success()
-                //         ->send();
-                // });
                 ->action(function (array $data) {
-                    // Get the correct file path from storage
-                    $filePath = $data['attachment'];
+                    $file = public_path('storage/' . $data['attachment']);
 
-                    // Full path to file
-                    $file = Storage::disk('local')->path($filePath);
-
-                    // Perform the Excel import
                     Excel::import(new EquipmentImport, $file);
 
                     Notification::make()
@@ -73,7 +49,6 @@ class ListEquipment extends ListRecords
 
         return $actions;
     }
-   
 
 
     public function getBreadcrumbs(): array
@@ -85,37 +60,37 @@ class ListEquipment extends ListRecords
     {
         return [
             Tab::make('All')
-            ->modifyQueryUsing(function (Builder $query) {
-                return $query->orderBy('created_at', 'desc'); 
+                ->modifyQueryUsing(function ($query) {
+                    return $query; // No filtering, display all records
                 }),
             Tab::make('Working')
-                ->modifyQueryUsing(function (Builder $query) {
-                    return $query->where('status', 'Working')->orderBy('created_at', 'desc');
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', 'Working');
                 }),
             Tab::make('For Repair')
-                ->modifyQueryUsing(function (Builder $query) {
-                    return $query->where('status', 'For Repair')->orderBy('created_at', 'desc');
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', 'For Repair');
                 }),
             Tab::make('For Replacement')
-                ->modifyQueryUsing(function (Builder $query) {
-                    return $query->where('status', 'For Replacement')->orderBy('created_at', 'desc');
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', 'For Replacement');
                 }),
             Tab::make('Lost')
-                ->modifyQueryUsing(function (Builder $query) {
-                    return $query->where('status', 'Lost')->orderBy('created_at', 'desc');
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', 'Lost');
                 }),
             Tab::make('For Disposal')
-                ->modifyQueryUsing(function (Builder $query) {
-                    return $query->where('status', 'For Disposal')->orderBy('created_at', 'desc');
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', 'For Disposal');
                 }),
             Tab::make('Disposed')
-                ->modifyQueryUsing(function (Builder $query) {
-                    return $query->where('status', 'Disposed')->orderBy('created_at', 'desc');
+                ->modifyQueryUsing(function ($query) {
+                    return $query->where('status', 'Disposed');
                 }),
-            /*Tab::make('Borrowed')
+            Tab::make('Borrowed')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('status', 'Borrowed');
-                }),*/
+                }),
         ];
     }
 }
