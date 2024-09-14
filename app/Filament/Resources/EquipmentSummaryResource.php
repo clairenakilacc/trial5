@@ -146,7 +146,6 @@ class EquipmentSummaryResource extends Resource
                         ->modalHeading('Add to Monitoring')
                         ->modalDescription('Confirm to add selected items to your Monitoring')
                         ->form(function (Forms\Form $form, $record) {
-<<<<<<< HEAD
                             return $form
                                 ->schema([
                                     Forms\Components\Select::make('monitored_by')
@@ -186,7 +185,6 @@ class EquipmentSummaryResource extends Resource
                                         ->formatStateUsing(fn($state) => strip_tags($state))
                                         ->label('Remarks'),
                                 ]);
-=======
                             return $form->schema([
                                 Forms\Components\Select::make('monitored_by')
                                     ->label('Monitored By')
@@ -221,7 +219,6 @@ class EquipmentSummaryResource extends Resource
                                     ->formatStateUsing(fn($state) => strip_tags($state))
                                     ->label('Remarks'),
                             ]);
->>>>>>> critical
                         })
                         ->action(function (array $data, $record) {
                             $data['equipment_id'] = $record->id;

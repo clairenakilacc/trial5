@@ -185,7 +185,7 @@ class BorrowListResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Borrowed By')
+                    ->label('Created By')
                     ->searchable(),
                
                 Tables\Columns\TextColumn::make('equipment.description')
