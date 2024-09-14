@@ -161,7 +161,7 @@ class EquipmentSummaryResource extends Resource
                                 'monitorings' => $monitorings,
                             ]);
                         }),
-                    Tables\Actions\Action::make('Monitor')
+                    Tables\Actions\Action::make('Update Status')
                         ->icon('heroicon-o-plus')
                         ->color('primary')
                         ->requiresConfirmation()
@@ -180,6 +180,7 @@ class EquipmentSummaryResource extends Resource
                                     Forms\Components\DatePicker::make('monitored_date')
                                         ->label('Monitoring Date')
                                         ->required()
+                                        ->disabled()
                                         ->default(now())
                                         ->format('Y-m-d'),
 
@@ -197,6 +198,7 @@ class EquipmentSummaryResource extends Resource
                                         ->default($record->status)
                                         ->native(false),
                                     Forms\Components\Select::make('facility_id')
+                                        ->label ('New Assigned Facility')
                                         ->relationship('facility', 'name')
                                         ->default($record->facility_id)
                                         ->required(),

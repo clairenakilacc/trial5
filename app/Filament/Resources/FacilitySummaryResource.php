@@ -98,7 +98,7 @@ class FacilitySummaryResource extends Resource
                                 'monitorings' => $monitorings,
                             ]);
                         }),
-                    Tables\Actions\Action::make('Monitor')
+                    Tables\Actions\Action::make('Update Status')
                         ->icon('heroicon-o-plus')
                         ->color('primary')
                         ->requiresConfirmation()
