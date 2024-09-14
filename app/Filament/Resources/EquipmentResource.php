@@ -259,6 +259,11 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('restocking_point')
                     ->searchable()
                     ->sortable()
+
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->restocking_point} {$stockUnitDescription}";
+                    })                    
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('person_liable')
                     ->searchable()
