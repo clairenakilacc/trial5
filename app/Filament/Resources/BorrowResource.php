@@ -51,6 +51,8 @@ class BorrowResource extends Resource
                     ->relationship('user', 'name')
                     ->required()
                     ->default(auth()->id()),
+                Forms\Components\Select::make('borrowed_by')
+                    ->required(),
                 Forms\Components\Select::make('equipment_id')
                     ->relationship('equipment', 'name')
                     ->nullable(),
@@ -96,12 +98,14 @@ class BorrowResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Borrowed By')
+                    ->label('Created By')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-
-                
+                Tables\Columns\TextColumn::make('borrowed_by')
+                    ->label('Borrowed By')    
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Requested Equipment')
                     ->searchable()

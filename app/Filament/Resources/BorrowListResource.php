@@ -41,7 +41,7 @@ class BorrowListResource extends Resource
         return static::getModel()::count();
     }
 
-    public static function form(Form $form): Form
+    /*public static function form(Form $form): Form
     {
 
         return $form
@@ -56,12 +56,14 @@ class BorrowListResource extends Resource
                     ->relationship('equipment', 'description')
                     ->required()
                     ->helperText('Leave blank if inapplicable.'),
+                Forms\Components\Select::make('borrowed_by')
+                    ->required(),
                 Forms\Components\Select::make('facility_id')
                     ->relationship('equipment', 'facility.name')
                     ->required()
                     ->helperText('Leave blank if inapplicable.'),
             ]);
-    }
+    }*/
 
     public static function table(Table $table): Table
     {
@@ -99,7 +101,9 @@ class BorrowListResource extends Resource
                                 ->extraAttributes([
                                     'data-clock-format' => '12',
                                 ]),
-                                       
+                            Forms\Components\TextInput::make('borrowed_by')
+                                ->required()
+                                ->default(fn () => Auth::user() ? Auth::user()->name : ''),                                       
                             Forms\Components\TextInput::make('purpose')
                                 ->required()
                                 ->default('Course/Class Lecture')
@@ -185,7 +189,7 @@ class BorrowListResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Borrowed By')
+                    ->label('Created By')
                     ->searchable(),
                
                 Tables\Columns\TextColumn::make('equipment.description')
@@ -264,6 +268,9 @@ class BorrowListResource extends Resource
                                     ->extraAttributes([
                                         'data-clock-format' => '12', 
                                     ]),
+                                    Forms\Components\TextInput::make('borrowed_by')
+                                        ->default(fn () => Auth::user() ? Auth::user()->name : '')                                      
+                                        ->required(),
                                     Forms\Components\TextInput::make('purpose')
                                         ->required()
                                         ->default('Course/Class Lecture')
@@ -306,6 +313,7 @@ class BorrowListResource extends Resource
                                             'request_form' => $data['request_form'],
                                             'date' => now(),
                                             'purpose' => $data['purpose'],
+                                            'borrowed_by' => $data['borrowed_by'],
                                             'date_and_time_of_use' => $data['date_and_time_of_use'],
                                             'college_department_office' => $data['college_department_office'],
                                             'borrowed_date' => now(),

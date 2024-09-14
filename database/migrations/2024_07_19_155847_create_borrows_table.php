@@ -27,6 +27,7 @@ return new class extends Migration
             $table->date('returned_date')->nullable();
             $table->string('status')->default('Unreturned');
             //$table->string('remarks')->nullable();
+            $table->text('borrowed_by')->nullable();
             $table->text('remarks')->nullable();
             
             
