@@ -210,28 +210,37 @@ class EquipmentSummaryResource extends Resource
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-pencil')
                         ->modalHeading('Adjust Stock')
-                        ->modalDescription('Enter the quantity to deduct from stock.')
+                        ->modalDescription('Enter the quantity to deduct from stocks.')
                         ->form(function (Forms\Form $form, $record) {
                             return $form->schema([
                                 Forms\Components\TextInput::make('quantity')
-                                    ->label('Quantity to Deduct')
+                                    ->label('Quantity to deduct from its stocks')
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    ->maxValue($record->stock)
-                                    ->hint("Available stock: {$record->stock}")
+                                    ->maxValue($record->no_of_stocks)
+                                    ->hint("Available stock: {$record->no_of_stocks}")
                                     ->required(),
                             ]);
                         })
                         ->action(function (array $data, $record) {
-                            $newStock = $record->stock - $data['quantity'];
-                            $record->update(['stock' => $newStock]);
+                            $newStock = $record->no_of_stocks - $data['quantity'];
+                            if ($newStock < 0) {
+                                Notification::make()
+                                ->danger()
+                                ->title('Error')
+                                ->body('Insufficient stock. Cannot deduct more than available stock.')
+                                ->send();
+                        } else {
+
+                            $record->update(['no_of_stocks' => $newStock]);
     
                             Notification::make()
                                 ->success()
                                 ->title('Stock Adjusted')
                                 ->body('Stock has been successfully adjusted.')
                                 ->send();
+                            }
                         }),
                 ]),
             ])
