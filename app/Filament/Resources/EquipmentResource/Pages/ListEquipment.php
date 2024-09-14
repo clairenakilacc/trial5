@@ -89,7 +89,7 @@ class ListEquipment extends ListRecords
                 }),
             Tab::make('Borrowed')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Borrowed');
+                    return $query->where('borrows.status', 'Unreturned');
                 }),
         ];
     }

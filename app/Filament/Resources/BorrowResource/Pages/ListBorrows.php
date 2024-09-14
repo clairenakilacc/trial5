@@ -35,9 +35,9 @@ class ListBorrows extends ListRecords
                 Tab::make('All')
                     ->modifyQueryUsing(fn($query) => $query),
                 Tab::make('Returned')
-                    ->modifyQueryUsing(fn($query) => $query->where('availability', 'Returned')),
+                    ->modifyQueryUsing(fn($query) => $query->where('status', 'Returned')),
                 Tab::make('Unreturned')
-                    ->modifyQueryUsing(fn($query) => $query->where('availability', 'Unreturned')),
+                    ->modifyQueryUsing(fn($query) => $query->where('status', 'Unreturned')),
             ]
         );
     }
