@@ -52,7 +52,6 @@ class EquipmentResource extends Resource
                                 Forms\Components\TextInput::make('unit_no')
                                     ->placeholder('Set number pasted on the Comlab table.')
                                     ->label('Unit Number')
-                                    ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('description')
                                     ->placeholder('Brand Name of Equipment')
@@ -255,6 +254,11 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('restocking_point')
                     ->searchable()
                     ->sortable()
+
+                    ->formatStateUsing(function ($record) {
+                        $stockUnitDescription = $record->stockUnit ? $record->stockUnit->description : "";
+                        return "{$record->restocking_point} {$stockUnitDescription}";
+                    })                    
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('person_liable')
                     ->searchable()
