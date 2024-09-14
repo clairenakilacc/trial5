@@ -42,7 +42,7 @@ class BorrowResource extends Resource
         // If the user is not a 'panel_user', return the total count
         return static::getModel()::count();
     }
-
+/*
     public static function form(Form $form): Form
     {
         return $form
@@ -51,6 +51,8 @@ class BorrowResource extends Resource
                     ->relationship('user', 'name')
                     ->required()
                     ->default(auth()->id()),
+                Forms\Components\Select::make('borrowed_by')
+                    ->required(),
                 Forms\Components\Select::make('equipment_id')
                     ->relationship('equipment', 'name')
                     ->nullable(),
@@ -72,7 +74,7 @@ class BorrowResource extends Resource
                     ->required()
                     ->maxLength(255),
             ]);
-    }
+    }*/
 
     public static function table(Table $table): Table
     {
@@ -96,12 +98,14 @@ class BorrowResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Borrowed By')
+                    ->label('Created By')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-
-                
+                Tables\Columns\TextColumn::make('borrowed_by')
+                    ->label('Borrowed By')    
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Requested Equipment')
                     ->searchable()
@@ -166,6 +170,7 @@ class BorrowResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('request_form')
+                ->label('Signed Request Form')
                 ->sortable()
                 ->formatStateUsing(fn (string $state): string => basename($state)),
 
@@ -180,7 +185,7 @@ class BorrowResource extends Resource
                     ->label('Availability')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('request_status'),
+                //Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('remarks')
                 ->label('Remarks')
                 ->sortable()
@@ -272,7 +277,7 @@ class BorrowResource extends Resource
 
                             // Update the record with the new status, returned date, and remarks
                             $record->update([
-                                'request_status' => $data['request_status'],
+                                //'request_status' => $data['request_status'],
                                 'status' => $data['status'],
                                 'returned_date' => $data['status'] === 'Returned' ? $data['returned_date'] : null,
                                 'remarks' => $data['status'] === 'Returned' ? $data['remarks'] : null,
