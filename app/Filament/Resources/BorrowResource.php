@@ -23,7 +23,7 @@ class BorrowResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-inbox-arrow-down';
 
     protected static ?string $navigationGroup = 'Borrowing';
-    protected static ?string $navigationLabel = 'Transferred to Borrows';
+    protected static ?string $navigationLabel = 'Borrowed Items';
     protected static ?int $navigationSort = 3;
 
     // public static function getNavigationBadge(): ?string
@@ -233,7 +233,7 @@ class BorrowResource extends Resource
                                         ->default('Unreturned')
                                         ->default(fn($record) => $record->status)
                                         ->required(),
-                                    Forms\Components\Select::make('request_status')
+                                    /*Forms\Components\Select::make('request_status')
                                         ->label('Request Status')
                                         ->options([
                                             'Pending' => 'Pending',
@@ -244,7 +244,7 @@ class BorrowResource extends Resource
                                         ->reactive()
                                         ->required()
                                         ->disabled(fn(callable $get) => $get('record.request_status') === 'Approved')
-                                        ->default(fn($record) => $record->request_status),
+                                        ->default(fn($record) => $record->request_status),*/
                                     
                                     Forms\Components\DateTimePicker::make('returned_date')
                                         ->label('Returned Date')
