@@ -33,6 +33,7 @@ class Equipment extends Model
         'specifications',
         'facility_id',
         'category_id',
+        'user_id',
         'status',
         'date_acquired',
         'supplier',

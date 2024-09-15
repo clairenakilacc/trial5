@@ -66,10 +66,35 @@ class EquipmentImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
+        $userId = auth()->id(); 
         // Retrieve related models or set to null if not found
-        $facility = Facility::where('name', $row['facility_id'] ?? '')->first();
+        /*$facility = Facility::where('name', $row['facility_id'] ?? '')->first();
         $category = Category::where('description', $row['category_id'] ?? '')->first();
-        $stock_unit = StockUnit::where('description', $row['stock_unit_id'] ?? '')->first();
+        $stock_unit = StockUnit::where('description', $row['stock_unit_id'] ?? '')->first();*/
+
+        /*$facility = Facility::firstOrCreate(
+            ['name' => $row['facility_id'] ?? ''], 
+            ['name' => $row['facility_id'] ?? '']
+        );
+
+        $category = Category::firstOrCreate(
+            ['description' => $row['category_id'] ?? ''], 
+            ['description' => $row['category_id'] ?? '']
+        );
+
+        $stock_unit = StockUnit::firstOrCreate(
+            ['description' => $row['stock_unit_id'] ?? ''], 
+            ['description' => $row['stock_unit_id'] ?? '']
+        );*/
+
+        $facilityName = trim($row['facility_id'] ?? '');
+        $categoryDescription = trim($row['category_id'] ?? '');
+        $stockUnitDescription = trim($row['stock_unit_id'] ?? '');
+
+        $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
+        $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
+        $stock_unit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
+
     
         // Prepare data array with null checks
         $data = [
@@ -91,6 +116,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
             'restocking_point' => $row['restocking_point'] ?? null,
             'stock_unit_id' => $stock_unit ? $stock_unit->id : null,
             'person_liable' => $row['person_liable'] ?? null,
+            'user_id' => $userId ?? null, 
             'remarks' => $row['remarks'] ?? null,
         ];
     

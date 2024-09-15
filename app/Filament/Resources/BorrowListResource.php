@@ -86,7 +86,7 @@ class BorrowListResource extends Resource
                     ->icon('heroicon-o-arrow-right')
                     ->form([
                         Forms\Components\Grid::make([
-                            'default' => 2,
+                            'default' => 3,
                         ])->schema([
                             Forms\Components\DateTimePicker::make('date')
                                 

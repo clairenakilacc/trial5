@@ -207,6 +207,9 @@ class EquipmentResource extends Resource
                         'For Disposal' => 'primary',
                         'Disposed' => 'danger',
                         'Borrowed' => 'indigo',
+                        'Excess' => 'gray',
+                        default => 'secondary',  
+
                     }),
                 Tables\Columns\TextColumn::make('date_acquired')
                     ->searchable()
@@ -273,7 +276,11 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-               
+                 Tables\Columns\TextColumn::make('user_id')
+                 ->LABEL('cREATED bY')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 
             ])
             ->filters([
