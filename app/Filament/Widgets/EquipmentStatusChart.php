@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class EquipmentStatusChart extends ChartWidget
 {
-    protected static ?string $heading = 'Equipment Per Status';
+    protected static ?string $heading = 'Equipment Count Per Status';
 
     // Set the chart's filter to 'working' or any other desired default status
     // protected static ?string $filter = 'working';
@@ -77,6 +77,6 @@ class EquipmentStatusChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line';
+        return 'doughnut';
     }
 }

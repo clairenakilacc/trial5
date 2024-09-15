@@ -8,16 +8,17 @@ use App\Models\Facility;
 
 class EquipmentPerFacility extends ChartWidget
 {
-    protected static ?string $heading = 'Equipments Per Facility';
+    protected static ?string $heading = 'Equipment Count Per Facility';
 
     protected function getData(): array
     {
-
+        // Fetch equipment counts per facility
         $equipmentCounts = Equipment::selectRaw('facility_id, COUNT(*) as count')
             ->groupBy('facility_id')
             ->pluck('count', 'facility_id')
             ->toArray();
 
+        // Fetch all facilities
         $facilities = Facility::all();
 
         // Prepare labels and data for the chart
@@ -25,14 +26,17 @@ class EquipmentPerFacility extends ChartWidget
         $data = [];
 
         foreach ($facilities as $facility) {
-            $labels[] = $facility->name;  // Assuming the 'name' field is the facility name
-            $data[] = $equipmentCounts[$facility->id] ?? 0;  // Default to 0 if no equipment is found for that facility
+            // Add facility name to labels
+            $labels[] = $facility->name;
+
+            // Default equipment count to 0 if the facility has no equipment
+            $data[] = isset($equipmentCounts[$facility->id]) ? $equipmentCounts[$facility->id] : 0;
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Number of Equipments',
+                    'label' => 'No. of Equipment',
                     'data' => $data,
                     'backgroundColor' => [
                         'rgba(75, 192, 192, 0.2)',
