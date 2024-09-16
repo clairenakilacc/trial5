@@ -163,7 +163,7 @@ class EquipmentResource extends Resource
                 ->color('primary')
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Borrow List')
+                ->modalHeading('Add to Borrow Lists')
                 ->modalDescription('Confirm to add selected items to your borrow lists'),
         ];
 
@@ -277,7 +277,7 @@ class EquipmentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                  Tables\Columns\TextColumn::make('user_id')
-                 ->LABEL('cREATED bY')
+                 ->LABEL('Created By')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

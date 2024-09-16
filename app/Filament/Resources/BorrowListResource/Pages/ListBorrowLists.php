@@ -18,6 +18,16 @@ class ListBorrowLists extends ListRecords
         return parent::getTableQuery()
             ->orderBy('created_at', 'desc'); // Order by the latest entries first
     }
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('downloadRequestForm')
+                ->label('Download Request Form')
+                //->icon('heroicon-o-download')
+                ->color('primary')
+                ->url(asset('storage/request_form/request_form.pdf'))
+                ->openUrlInNewTab(),
+        ];
 
     // protected function getHeaderActions(): array
     // {
@@ -25,4 +35,5 @@ class ListBorrowLists extends ListRecords
     //         Actions\CreateAction::make(),
     //     ];
     // }
+    }
 }

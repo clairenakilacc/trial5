@@ -82,12 +82,15 @@ class BorrowListResource extends Resource
             Tables\Actions\ActionGroup::make([
 
                 Tables\Actions\Action::make('transferToBorrow')
-                    ->label('Transfer to Borrow')
+                    ->label('Transfer to Borrowed')
                     ->icon('heroicon-o-arrow-right')
                     ->form([
+                       /* Forms\Components\View::make('download_link')
+                                ->view('components.download-link'),*/
                         Forms\Components\Grid::make([
-                            'default' => 3,
+                            'default' => 2,
                         ])->schema([
+                            
                             Forms\Components\DateTimePicker::make('date')
                                 
                                 ->native(false)
@@ -102,8 +105,8 @@ class BorrowListResource extends Resource
                                     'data-clock-format' => '12',
                                 ]),
                             Forms\Components\TextInput::make('borrowed_by')
-                                ->required()
-                                ->default(fn () => Auth::user() ? Auth::user()->name : ''),                                       
+                                ->required(),
+                                //->default(fn () => Auth::user() ? Auth::user()->name : ''),                                       
                             Forms\Components\TextInput::make('purpose')
                                 ->required()
                                 ->default('Course/Class Lecture')
@@ -122,10 +125,11 @@ class BorrowListResource extends Resource
                                 ->required()
                                 ->default('CCIS')
                                 ->placeholder('CCIS'),
-                            Forms\Components\View::make('download_link')
-                                ->view('components.download-link'),
+                            /*Forms\Components\View::make('download_link')
+                                ->view('components.download-link'),*/
                         ]),
                         Forms\Components\FileUpload::make('request_form')
+                            ->label('Signed Request Form')
                             ->disk('public')
                             ->required()
                             ->directory('request_forms')
@@ -142,6 +146,7 @@ class BorrowListResource extends Resource
                                     'equipment_id' => $borrowList->equipment_id,
                                     'facility_id' => $borrowList->facility_id,
                                     'request_status' => 'Pending',
+                                    'borrowed_by' => $data['borrowed_by'],
                                     'request_form' => $data['request_form'],
                                     'date' => now(),
                                     'purpose' => $data['purpose'],
@@ -156,7 +161,7 @@ class BorrowListResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Success')
-                                    ->body('Selected items have been transferred to borrows.')
+                                    ->body('Selected items have been transferred to borrowed items.')
                                     ->send();
                             } else {
                                 Notification::make()
@@ -167,7 +172,8 @@ class BorrowListResource extends Resource
                             }
                         } else {
                             Notification::make()
-                                ->error()
+                                ->danger()
+                                //->error()
                                 ->title('Error')
                                 ->body('Invalid data or record.')
                                 ->send();
@@ -250,7 +256,7 @@ class BorrowListResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('transferToBorrow')
-                        ->label('Transfer to Borrow')
+                        ->label('Transfer to Borrowed')
                         ->icon('heroicon-o-arrow-right')
                         ->form([
                             Forms\Components\Grid::make([
@@ -269,7 +275,7 @@ class BorrowListResource extends Resource
                                         'data-clock-format' => '12', 
                                     ]),
                                     Forms\Components\TextInput::make('borrowed_by')
-                                        ->default(fn () => Auth::user() ? Auth::user()->name : '')                                      
+                                        //->default(fn () => Auth::user() ? Auth::user()->name : '')                                      
                                         ->required(),
                                     Forms\Components\TextInput::make('purpose')
                                         ->required()
@@ -288,10 +294,11 @@ class BorrowListResource extends Resource
                                     Forms\Components\TextInput::make('college_department_office')
                                         ->required()
                                         ->default('CCIS'),
-                                    Forms\Components\View::make('download_link')
-                                        ->view('components.download-link'),
+                                    /*Forms\Components\View::make('download_link')
+                                        ->view('components.download-link'),*/
                                 ]),
                             Forms\Components\FileUpload::make('request_form')
+                                ->label('Signed Request Form')
                                 ->disk('public')
                                 ->required()
                                 ->directory('request_forms')
@@ -316,7 +323,7 @@ class BorrowListResource extends Resource
                                             'borrowed_by' => $data['borrowed_by'],
                                             'date_and_time_of_use' => $data['date_and_time_of_use'],
                                             'college_department_office' => $data['college_department_office'],
-                                            'borrowed_date' => now(),
+                                            'borrowed_date' => now()->format('Y-m-d h:i A'),
                                         ]);
 
                                         $borrowList->delete();
@@ -326,11 +333,12 @@ class BorrowListResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Success')
-                                    ->body('Selected items have been transferred to borrows.')
+                                    ->body('Selected items have been transferred to borrowed items.')
                                     ->send();
                             } else {
                                 Notification::make()
-                                    ->error()
+                                    ->danger()
+                                //->error()
                                     ->title('Error')
                                     ->body('Invalid data or request form.')
                                     ->send();
@@ -339,8 +347,8 @@ class BorrowListResource extends Resource
                         ->color('success')
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-check')
-                        ->modalHeading('Add to Borrow List')
-                        ->modalDescription('Confirm to add selected items to your borrow list.'),
+                        ->modalHeading('Add to Borrowed Items')
+                        ->modalDescription('Confirm to add selected items to your borrowed items.'),
                 ])
             ]);
     }
