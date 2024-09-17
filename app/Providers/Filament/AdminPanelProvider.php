@@ -34,6 +34,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login( )
             ->brandName('CCIS ComLab System')
+            ->favicon(asset('images/ccis.png'))
+            //->brandLogo(asset('images/ccis.png'))
             // ->breadcrumbs(false)
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
