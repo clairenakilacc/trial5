@@ -145,7 +145,7 @@ class FacilityResource extends Resource
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
                 ->modalHeading('Add to Borrow Lists')
-                ->modalDescription('Confirm to add selected facilities to your borrow list'),
+                ->modalDescription('Confirm to add selected facilities to your borrow lists'),
         ];
 
         // Conditionally add ExportBulkAction

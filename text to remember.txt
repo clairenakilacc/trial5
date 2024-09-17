@@ -1,0 +1,14 @@
+composer require livewire/livewire
+Remove-Item -Path .git/index.lock
+composer require maatwebsite/excel
+//php artisan make:export BorrowExport --model=Borrow
+
+//vendor/src/panel/auth/login.php
+
+composer require barryvdh/laravel-debugbar --dev
+php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
+
+//in app.php, debug bool, change to true
+//make sure app_debug is true too in env
+//reload homepage
+//https://github.com/barryvdh/laravel-debugbar

@@ -1,5 +1,0 @@
-composer require livewire/livewire
-Remove-Item -Path .git/index.lock
-composer require maatwebsite/excel
-php artisan make:export BorrowExport --model=Borrow
-

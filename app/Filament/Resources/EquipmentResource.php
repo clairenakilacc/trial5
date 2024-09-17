@@ -163,7 +163,7 @@ class EquipmentResource extends Resource
                 ->color('primary')
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Borrow List')
+                ->modalHeading('Add to Borrow Lists')
                 ->modalDescription('Confirm to add selected items to your borrow lists'),
         ];
 
@@ -207,6 +207,9 @@ class EquipmentResource extends Resource
                         'For Disposal' => 'primary',
                         'Disposed' => 'danger',
                         'Borrowed' => 'indigo',
+                        'Excess' => 'gray',
+                        default => 'secondary',  
+
                     }),
                 Tables\Columns\TextColumn::make('date_acquired')
                     ->searchable()
@@ -278,7 +281,11 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-               
+                 Tables\Columns\TextColumn::make('user_id')
+                 ->LABEL('Created By')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 
             ])
             ->filters([

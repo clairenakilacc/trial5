@@ -8,7 +8,7 @@ use App\Models\Equipment;
 
 class EquipmentsPerCategory extends ChartWidget
 {
-    protected static ?string $heading = 'Equipment Per Category';
+    protected static ?string $heading = 'Equipment Count Per Category';
 
     protected function getData(): array
     {
