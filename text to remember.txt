@@ -29,3 +29,4 @@ protected function getTableQuery(): ?Builder
     
 //write code after public function Tables
 //return the bulk action in the last
+//    public static function table(Tables\Table $table): Tables\Table
