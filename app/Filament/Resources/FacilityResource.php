@@ -156,6 +156,7 @@ class FacilityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),

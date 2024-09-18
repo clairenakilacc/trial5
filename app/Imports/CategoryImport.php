@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use Illuminate\Support\Collection;
-use App\Models\Facility;
+use App\Models\Category;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Log;
 
 
-class FacilityImport implements ToModel, WithHeadingRow
+class CategoryImport implements ToModel, WithHeadingRow
 {
     use Importable;
 
@@ -25,17 +25,12 @@ class FacilityImport implements ToModel, WithHeadingRow
     {
         $userId = auth()->id(); 
 
-        $facilityName = trim($row['facility_id'] ?? '');
-        $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
+        $categoryDescription = trim($row['category_id'] ?? '');
+        $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
  // Prepare data array with null checks
  $data = [
-    'name' => $row['name'] ?? null,
-    'connection_type' => $row['connection_type'] ?? null,
-    'facility_type' => $row['facility_type'] ?? null,
-    'cooling_tools' => $row['cooling_tools'] ?? null,
-    'floor_level' => $row['floor_level'] ?? null,
-    'building' => $row['building'] ?? null,
-    'remarks' => $row['remarks'] ?? null,
+    'description' => $row['description'] ?? null,
+   
     
 ];
         // Check if the row has any meaningful data before inserting
@@ -44,7 +39,7 @@ class FacilityImport implements ToModel, WithHeadingRow
             return null;
         }
          // Create and return new Equipment instance if the row has data
-         return new Facility($data);
+         return new Category($data);
         }
     }    
 
