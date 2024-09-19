@@ -46,12 +46,17 @@ class StockUnitResource extends Resource
                 ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
 
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                 Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
                     ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        // Format the date and time
+                        return $state ? $state->format('F j, Y h:i A') : null;
+                    })
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Created by')
+                    ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

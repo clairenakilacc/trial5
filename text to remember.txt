@@ -29,3 +29,9 @@ protected function getTableQuery(): ?Builder
     
 //write code after public function Tables
 //return the bulk action in the last
+
+
+//order latest in listing
+
+->orderBy('created_at', 'desc');
+return $query->orderBy('created_at', 'desc');;

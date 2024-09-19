@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('building')->default('HIRAYA');
             $table->string('remarks')->nullable();
             $table->string('facility_img')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

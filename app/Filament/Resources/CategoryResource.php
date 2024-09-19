@@ -3,6 +3,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
+use App\Models\User;
+
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -63,6 +65,19 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->searchable(),
+                    Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        // Format the date and time
+                        return $state ? $state->format('F j, Y h:i A') : null;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Created by')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 // Add any filters here if needed

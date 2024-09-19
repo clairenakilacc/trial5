@@ -276,7 +276,7 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                 Tables\Columns\TextColumn::make('user_id')
+                 Tables\Columns\TextColumn::make('user.name')
                  ->LABEL('Created By')
                     ->searchable()
                     ->sortable()
