@@ -12,3 +12,30 @@ php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
 //make sure app_debug is true too in env
 //reload homepage
 //https://github.com/barryvdh/laravel-debugbar
+
+//making import
+php artisan make:import CategoryImport
+//copy the code in import and the list
+//import action and classes
+
+//export
+use Illuminate\Database\Eloquent\Builder; for latest
+protected function getTableQuery(): ?Builder
+    {
+        // Get the base query and order it by the latest created_at field
+        return parent::getTableQuery()->latest('created_at');
+    }
+*use Filament\Tables\Actions\ExportBulkAction; 
+    
+//write code after public function Tables
+//return the bulk action in the last
+<<<<<<< HEAD
+
+
+//order latest in listing
+
+->orderBy('created_at', 'desc');
+return $query->orderBy('created_at', 'desc');;
+=======
+//    public static function table(Tables\Table $table): Tables\Table
+>>>>>>> 9173959a0892cd4d7a4568c833c8dbde5ce092a4

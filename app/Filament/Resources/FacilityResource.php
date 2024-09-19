@@ -15,6 +15,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
 use Filament\Infolists\Infolist;
 use App\Models\BorrowList;
+use App\Models\User;
 use Filament\Forms\FormsComponent;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components;
@@ -154,8 +155,10 @@ class FacilityResource extends Resource
         }
 
         return $table
+        ->query(Facility::with('user'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->sortable(),
@@ -175,6 +178,19 @@ class FacilityResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strip_tags($state))
                     ->html(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        // Format the date and time
+                        return $state ? $state->format('F j, Y h:i A') : null;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Created by')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 // Your filters here
