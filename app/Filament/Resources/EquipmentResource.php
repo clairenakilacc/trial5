@@ -257,8 +257,8 @@ class EquipmentResource extends Resource
                 Tables\Columns\TextColumn::make('stockUnit.description')
                     ->label("Stock Unit")
                     ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
+                    //->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('restocking_point')
                     ->searchable()
                     ->sortable()

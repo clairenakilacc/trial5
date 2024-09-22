@@ -20,6 +20,8 @@ class FacilityImport implements ToModel, WithHeadingRow
             'floor_level' => $row['floor_level'] ?? null,
             'building' => $row['building'] ?? null,
             'remarks' => $row['remarks'] ?? null,
+            'user_id' => $userId ?? null, 
+
         ];
 
         // Check if the row has any meaningful data before processing
