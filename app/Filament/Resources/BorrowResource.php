@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BorrowResource\Pages;
 use App\Filament\Resources\BorrowResource\RelationManagers;
 use App\Models\Borrow;
+use App\Models\BorrowList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -107,7 +108,7 @@ class BorrowResource extends Resource
                     $query->where('user_id', Auth::id());
                 }
             })*/
-                Tables\Columns\TextColumn::make('date')
+                Tables\Columns\TextColumn::make('borrowed_date')
                     ->label('Date Borrowed')
                     ->searchable()
                     ->sortable()
