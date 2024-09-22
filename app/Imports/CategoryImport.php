@@ -3,6 +3,8 @@
 namespace App\Imports;
 
 use App\Models\Category;
+use App\Models\User;
+
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;

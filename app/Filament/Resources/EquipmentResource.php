@@ -254,11 +254,11 @@ class EquipmentResource extends Resource
                         return "{$record->no_of_stocks} {$stockUnitDescription}";
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('stockUnit.description')
+                /*Tables\Columns\TextColumn::make('stockUnit.description')
                     ->label("Stock Unit")
                     ->searchable()
                     ->sortable(),
-                    //->toggleable(isToggledHiddenByDefault: true),
+                    //->toggleable(isToggledHiddenByDefault: true),*/
                 Tables\Columns\TextColumn::make('restocking_point')
                     ->searchable()
                     ->sortable()
@@ -281,11 +281,11 @@ class EquipmentResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                 Tables\Columns\TextColumn::make('user.name')
+                 /*Tables\Columns\TextColumn::make('user.name')
                  ->LABEL('Created By')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),*/
                 
             ])
             ->filters([

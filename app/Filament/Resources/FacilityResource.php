@@ -186,11 +186,7 @@ class FacilityResource extends Resource
                         return $state ? $state->format('F j, Y h:i A') : null;
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Created by')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                
             ])
             ->filters([
                 // Your filters here
@@ -259,7 +255,27 @@ class FacilityResource extends Resource
             ]);
     }
 
+    public static function create(array $data)
+    {
+        // Check if the facility already exists
+        if (Facility::where('name', $data['name'])->exists()) {
+            Notification::make()
+                ->title('Duplicate Facility')
+                ->body('A facility with this name already exists.')
+                ->danger()
+                ->send();
+            return;
+        }
 
+        // If it doesn't exist, create a new facility
+        Facility::create($data);
+
+        Notification::make()
+            ->title('Facility Created')
+            ->body('The facility has been successfully created.')
+            ->success()
+            ->send();
+    }
 
     public static function getRelations(): array
     {

@@ -60,27 +60,27 @@ class ListFacilities extends ListRecords
         return [
             Tab::make('All')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->orderBy('created_at', 'desc');; // No filtering, display all records
+                    return $query->orderBy('floor_level', 'asc');; // No filtering, display all records
                 }),
             Tab::make('1st Floor')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '1st Floor')
-                    ->orderBy('created_at', 'desc');
+                    ->orderBy('facility_type');
                 }),
             Tab::make('2nd Floor')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '2nd Floor')
-                    ->orderBy('created_at', 'desc');
+                    ->orderBy('facility_type');
                 }),
             Tab::make('3rd Floor')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '3rd Floor')
-                    ->orderBy('created_at', 'desc');
+                    ->orderBy('facility_type');
                 }),
             Tab::make('4th Floor')
                 ->modifyQueryUsing(function ($query) {
                     return $query->where('floor_level', '4th Floor')
-                    ->orderBy('created_at', 'desc');
+                    ->orderBy('facility_type');
                 }),
             
         ];

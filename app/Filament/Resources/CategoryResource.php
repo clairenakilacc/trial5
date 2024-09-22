@@ -73,11 +73,7 @@ class CategoryResource extends Resource
                         return $state ? $state->format('F j, Y h:i A') : null;
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Created by')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                 
             ])
             ->filters([
                 // Add any filters here if needed
