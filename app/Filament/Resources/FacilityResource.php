@@ -206,7 +206,7 @@ class FacilityResource extends Resource
                         ->slideOver()
                         ->modalHeading('Equipment List')
                         ->modalContent(function ($record) {
-                            $equipment = Equipment::where('facility_id', $record->id)->paginate(10);
+                            $equipment = Equipment::where('facility_id', $record->id)->paginate(100);
 
                             return view('filament.resources.facility-equipment-modal', [
                                 'equipment' => $equipment,

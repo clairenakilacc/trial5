@@ -1,6 +1,6 @@
 <?php
 namespace App\Filament\Resources;
-
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use App\Models\User;
@@ -14,7 +14,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Actions\ExportBulkAction; 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
@@ -38,54 +37,58 @@ class CategoryResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         $user = auth()->user();
         $isPanelUser = $user && $user->hasRole('panel_user');
 
-        if (!$isPanelUser) {
-            $bulkActions[] = ExportBulkAction::make();
-        }
+         // Define the bulk actions array
+         $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\ExportBulkAction::make()
 
+         ];
+                 // Conditionally add ExportBulkAction
 
-        // Initialize bulk actions
-        $bulkActions = [
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ExportBulkAction::make(),
-
-            ]),
-        ];
-
-        // Conditionally add ExportBulkAction if the user is not a panel_user
-       
-
-        return $table
+            if (!$isPanelUser) {
+                $bulkActions[] = ExportBulkAction::make();
+            }
+            return $table
+            ->query(Category::with('user'))
             ->columns([
-                Tables\Columns\TextColumn::make('description')
-                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
-                    ->searchable()
-                    ->sortable(),
-                    Tables\Columns\TextColumn::make('created_at')
-                    ->searchable()
-                    ->sortable()
-                    ->formatStateUsing(function ($state) {
-                        // Format the date and time
-                        return $state ? $state->format('F j, Y h:i A') : null;
-                    })
-                    ->toggleable(isToggledHiddenByDefault: true),
-                 
-            ])
-            ->filters([
-                // Add any filters here if needed
-            ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                ]),
-            ])
-            ->bulkActions($bulkActions); // Pass the bulk actions array here
-    }
+    
+         
+                    Tables\Columns\TextColumn::make('description')
+                        ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+                        ->searchable()
+                        ->sortable(),
+                        Tables\Columns\TextColumn::make('created_at')
+                        ->searchable()
+                        ->sortable()
+                        ->formatStateUsing(function ($state) {
+                            // Format the date and time
+                            return $state ? $state->format('F j, Y h:i A') : null;
+                        })
+                        ->toggleable(isToggledHiddenByDefault: true),
+                     
+                ])
+                ->filters([
+                    // Add any filters here if needed
+                ])
+                ->actions([
+                    Tables\Actions\ActionGroup::make([
+                        Tables\Actions\EditAction::make(),
+                    ]),
+                ])
+                ->bulkActions([
+                    Tables\Actions\BulkActionGroup::make($bulkActions)
+                    ->label('Actions')
+                ]); // Pass the bulk actions array here
+        }
+        
+
+
+       
 
     public static function getRelations(): array
     {
@@ -99,7 +102,7 @@ class CategoryResource extends Resource
         return [
             'index' => Pages\ListCategories::route('/'),
             'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            //'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
 }

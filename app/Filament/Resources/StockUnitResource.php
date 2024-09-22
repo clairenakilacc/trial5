@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class StockUnitResource extends Resource
 {
@@ -38,13 +40,30 @@ class StockUnitResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
-        return $table
+        
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+         // Define the bulk actions array
+         $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\ExportBulkAction::make()
+
+         ];
+                 // Conditionally add ExportBulkAction
+
+            if (!$isPanelUser) {
+                $bulkActions[] = ExportBulkAction::make();
+            }
+            return $table
+            ->query(StockUnit::with('user'))
             ->columns([
+    
                 Tables\Columns\TextColumn::make('description')
                 ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
-
+                    ->sortable()
                     ->searchable(),
                  Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
@@ -54,11 +73,7 @@ class StockUnitResource extends Resource
                         return $state ? $state->format('F j, Y h:i A') : null;
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
-                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Created by')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                 
             ])
             ->filters([
                 //
@@ -67,10 +82,9 @@ class StockUnitResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+                Tables\Actions\BulkActionGroup::make($bulkActions)
+                ->label('Actions')
+            ]); // Pass the bulk actions array here
     }
 
     public static function getRelations(): array
@@ -85,7 +99,7 @@ class StockUnitResource extends Resource
         return [
             'index' => Pages\ListStockUnits::route('/'),
             'create' => Pages\CreateStockUnit::route('/create'),
-            'edit' => Pages\EditStockUnit::route('/{record}/edit'),
+            //'edit' => Pages\EditStockUnit::route('/{record}/edit'),
         ];
     }
 }
