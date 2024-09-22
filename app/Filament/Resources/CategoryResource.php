@@ -64,7 +64,8 @@ class CategoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                     Tables\Columns\TextColumn::make('created_at')
                     ->searchable()
                     ->sortable()
