@@ -1,50 +1,35 @@
 <?php
-
 namespace App\Imports;
-
+use Maatwebsite\Excel\Concerns\Importable;
 use App\Models\Equipment;
 use App\Models\Facility;
 use App\Models\Category;
 use App\Models\StockUnit;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
-use Illuminate\Support\Facades\Log;
-
 
 class EquipmentImport implements ToModel, WithHeadingRow
 {
-
-
-
     use Importable;
 
     /**
      * @param array $row
-     *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-
- 
-
-    //     // dd($equipment);
-    // }
-
     public function model(array $row)
     {
         $userId = auth()->id(); 
        
-
+        // Trimming and preparing row data
         $facilityName = trim($row['facility_id'] ?? '');
         $categoryDescription = trim($row['category_id'] ?? '');
         $stockUnitDescription = trim($row['stock_unit_id'] ?? '');
 
+        // Fetch or create related models
         $facility = $facilityName ? Facility::firstOrCreate(['name' => $facilityName], ['name' => $facilityName]) : null;
         $category = $categoryDescription ? Category::firstOrCreate(['description' => $categoryDescription], ['description' => $categoryDescription]) : null;
         $stock_unit = $stockUnitDescription ? StockUnit::firstOrCreate(['description' => $stockUnitDescription], ['description' => $stockUnitDescription]) : null;
 
-    
         // Prepare data array with null checks
         $data = [
             'unit_no' => $row['unit_no'] ?? null,
@@ -68,14 +53,15 @@ class EquipmentImport implements ToModel, WithHeadingRow
             'user_id' => $userId ?? null, 
             'remarks' => $row['remarks'] ?? null,
         ];
-    
+
         // Check if the row has any meaningful data before inserting
+        // `array_filter` will return true if there's at least one non-empty value
         if (!array_filter($data, fn($value) => !is_null($value) && $value !== '')) {
-            // If the row is blank, return null to skip insertion
+            // If the row is blank, skip insertion
             return null;
         }
-    
-        // Create and return new Equipment instance if the row has data
+
+        // Return new Equipment instance if the row has data
         return new Equipment($data);
     }
-}    
+}
