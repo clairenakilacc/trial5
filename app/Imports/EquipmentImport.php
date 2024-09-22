@@ -26,40 +26,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
      * @return \Illuminate\Database\Eloquent\Model|null
      */
 
-    // public function model(array $row)
-    // {
-    //     // dd($row);
-    //     $facility = Facility::where('name', $row['facility_id'])->first();
-    //     $category = Category::where('name', $row['category_id'])->first();
-    //     $stock_unit = StockUnit::where('description', $row['stock_unit'])->first();
-
-
-    //     $data = [
-    //         'unit_no' => $row['unit_no'],
-    //         'description' => $row['description'],
-    //         'specifications' => $row['specifications'],
-    //         'facility_id' => $facility->id,
-    //         'category_id' => $category->id,
-    //         'stock_unit' =>  $stock_unit->id,
-    //         'status' => $row['status'],
-    //         'date_acquired' => $row['date_acquired'],
-    //         'supplier' => $row['supplier'],
-    //         'amount' => $row['amount'],
-    //         'estimated_life' => $row['estimated_life'],
-    //         'item_no' => $row['item_no'],
-    //         'property_no' => $row['property_no'],
-    //         'control_no' => $row['control_no'],
-    //         'serial_no' => $row['serial_no'],
-    //         'no_of_stocks' => $row['no_of_stocks'],
-    //         'restocking_point' => $row['restocking_point'],
-    //         'person_liable' => $row['person_liable'],
-    //         'remarks' => $row['remarks'],
-    //     ];
-
-
-    //     $equipment = new Equipment($data);
-
-    //     return $equipment;
+ 
 
     //     // dd($equipment);
     // }
@@ -67,25 +34,7 @@ class EquipmentImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $userId = auth()->id(); 
-        // Retrieve related models or set to null if not found
-        /*$facility = Facility::where('name', $row['facility_id'] ?? '')->first();
-        $category = Category::where('description', $row['category_id'] ?? '')->first();
-        $stock_unit = StockUnit::where('description', $row['stock_unit_id'] ?? '')->first();*/
-
-        /*$facility = Facility::firstOrCreate(
-            ['name' => $row['facility_id'] ?? ''], 
-            ['name' => $row['facility_id'] ?? '']
-        );
-
-        $category = Category::firstOrCreate(
-            ['description' => $row['category_id'] ?? ''], 
-            ['description' => $row['category_id'] ?? '']
-        );
-
-        $stock_unit = StockUnit::firstOrCreate(
-            ['description' => $row['stock_unit_id'] ?? ''], 
-            ['description' => $row['stock_unit_id'] ?? '']
-        );*/
+       
 
         $facilityName = trim($row['facility_id'] ?? '');
         $categoryDescription = trim($row['category_id'] ?? '');
