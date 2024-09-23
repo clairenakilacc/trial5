@@ -59,37 +59,61 @@ class ListEquipment extends ListRecords
     public function getTabs(): array
     {
         return [
+            /*Tabs::make('Facilities', [
+                Tab::make('All', function () {
+                    return [
+                        Text::make('Facility ID', 'facility_id')->sortable(),
+                        Text::make('Unit No', 'unit_no')->sortable(),
+                        // Add other fields as needed
+                    ];
+                })->withMeta([
+                    'query' => function ($query) {
+                        return $query->orderBy('facility_id', 'asc')
+                                     ->orderBy('unit_no', 'asc'); // Order by both facility_id and unit_no
+                    },
+                ]),
+                // Add other tabs if needed
+            ]),
+        ];
+    }
+}),
+*/
+
             Tab::make('All')
                 ->modifyQueryUsing(function ($query) {
-                    return $query; // No filtering, display all records
+                    return $query  ->orderBy('facility_id', 'asc') // No filtering, display all records
+                    //->orderBy('unit_no' , 'desc')
+                    ->orderBy('category_id');
+
                 }),
+
             Tab::make('Working')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Working');
+                    return $query->where('status', 'Working') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Repair')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'For Repair');
+                    return $query->where('status', 'For Repair') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Replacement')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'For Replacement');
+                    return $query->where('status', 'For Replacement') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Lost')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Lost');
+                    return $query->where('status', 'Lost') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('For Disposal')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'For Disposal');
+                    return $query->where('status', 'For Disposal') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Disposed')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Disposed');
+                    return $query->where('status', 'Disposed') ->orderBy('created_at', 'desc');
                 }),
             Tab::make('Borrowed')
                 ->modifyQueryUsing(function ($query) {
-                    return $query->where('status', 'Unreturned');
+                    return $query->where('status', 'Unreturned') ->orderBy('created_at', 'desc');
                 }),
         ];
     }

@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class UserResource extends Resource
 {
@@ -58,18 +60,45 @@ class UserResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
-        return $table
+
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+         // Define the bulk actions array
+         $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\ExportBulkAction::make()
+
+         ];
+                 // Conditionally add ExportBulkAction
+
+            if (!$isPanelUser) {
+                $bulkActions[] = ExportBulkAction::make();
+            }
+            return $table
+            ->query(User::with('roles'))
             ->columns([
+
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Role')
                     ->formatStateUsing(fn($state): string => Str::headline($state))
                     ->colors(['info'])
+                    ->sortable()
                     ->badge(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->searchable()
+                    ->formatStateUsing(function ($state) {
+                        // Format the date and time
+                        return $state ? $state->format('F j, Y h:i A') : null;
+                    })
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -78,11 +107,10 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\BulkActionGroup::make($bulkActions)
+                    ->label('Actions')
             ]);
-    }
+        }
 
     public static function getPermissions(User $user)
     {

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BorrowResource\Pages;
 use App\Filament\Resources\BorrowResource\RelationManagers;
 use App\Models\Borrow;
+use App\Models\BorrowList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class BorrowResource extends Resource
 {
@@ -76,19 +79,36 @@ class BorrowResource extends Resource
             ]);
     }*/
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
 
-        return $table
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+         // Define the bulk actions array
+         $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\ExportBulkAction::make()
+
+         ];
+                 // Conditionally add ExportBulkAction
+
+            if (!$isPanelUser) {
+                $bulkActions[] = ExportBulkAction::make();
+            }
+            return $table
+            ->query(Borrow::with('user'))
+            ->columns([
+
+       /* return $table
             ->modifyQueryUsing(function (Builder $query) {
                 // Check if the authenticated user is a 'panel_user'
                 if (Auth::user() && Auth::user()->hasRole('panel_user')) {
                     // Filter the records to only show those that belong to the current logged-in user
                     $query->where('user_id', Auth::id());
                 }
-            })
-            ->columns([
-                Tables\Columns\TextColumn::make('date')
+            })*/
+                Tables\Columns\TextColumn::make('borrowed_date')
                     ->label('Date Borrowed')
                     ->searchable()
                     ->sortable()
@@ -185,15 +205,17 @@ class BorrowResource extends Resource
                     ->label('Availability')
                     ->sortable()
                     ->searchable(),
-                //Tables\Columns\TextColumn::make('request_status'),
+                Tables\Columns\TextColumn::make('returned_date')
+                    ->label('Date Returned')
+                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
+                    ->sortable(),
+                    //Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('remarks')
                 ->label('Remarks')
                 ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true)
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->searchable(),
-                Tables\Columns\TextColumn::make('returned_date')
-                ->label('Date Returned')
-                ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A')),
+               
 
                 // \EightyNine\Approvals\Tables\Columns\ApprovalStatusColumn::make("approvalStatus.status"),
             ])
@@ -303,12 +325,10 @@ class BorrowResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                   
-                ]),
+                Tables\Actions\BulkActionGroup::make($bulkActions)
+                    ->label('Actions')
             ]);
-        }            
+            }        
                 
     // protected static function getTableQuery(): Builder
     // {

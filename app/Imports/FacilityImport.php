@@ -11,6 +11,15 @@ class FacilityImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
+        $facilityName = trim($row['name'] ?? '');
+
+        // Check if the category with the description already exists
+        $existingFacility = Facility::where('name', $facilityName)->first();
+
+        // If the category already exists, skip insertion
+        if ($existingFacility) {
+            return null;
+        }
         // Prepare data array with null checks
         $data = [
             'name' => $row['name'] ?? null,
@@ -20,6 +29,8 @@ class FacilityImport implements ToModel, WithHeadingRow
             'floor_level' => $row['floor_level'] ?? null,
             'building' => $row['building'] ?? null,
             'remarks' => $row['remarks'] ?? null,
+            'user_id' => $userId ?? null, 
+
         ];
 
         // Check if the row has any meaningful data before processing

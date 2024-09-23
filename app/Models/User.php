@@ -14,6 +14,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;

@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('purpose')->nullable();
             $table->string('date_and_time_of_use')->nullable();
             $table->string('college_department_office')->nullable();
-            $table->date('borrowed_date')->nullable();
-            $table->date('returned_date')->nullable();
+            $table->string('borrowed_date')->nullable();
+            $table->string('returned_date')->nullable();
             $table->string('status')->default('Unreturned');
             //$table->string('remarks')->nullable();
             $table->text('borrowed_by')->nullable();

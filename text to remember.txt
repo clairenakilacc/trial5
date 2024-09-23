@@ -29,13 +29,46 @@ protected function getTableQuery(): ?Builder
     
 //write code after public function Tables
 //return the bulk action in the last
-<<<<<<< HEAD
-
-
-//order latest in listing
-
-->orderBy('created_at', 'desc');
-return $query->orderBy('created_at', 'desc');;
-=======
 //    public static function table(Tables\Table $table): Tables\Table
->>>>>>> 9173959a0892cd4d7a4568c833c8dbde5ce092a4
+
+
+export true
+**
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+**
+public static function table(Tables\Table $table): Tables\Table
+    
+{
+        $user = auth()->user();
+        $isPanelUser = $user && $user->hasRole('panel_user');
+
+         // Define the bulk actions array
+         $bulkActions = [
+            Tables\Actions\DeleteBulkAction::make(),
+            //Tables\Actions\ExportBulkAction::make()
+
+         ];
+                 // Conditionally add ExportBulkAction
+
+            if (!$isPanelUser) {
+                $bulkActions[] = ExportBulkAction::make();
+            }
+            return $table
+            ->query(Category::with('user'))
+            ->columns([
+    
+         
+                    Tables\Columns\TextColumn::make('description')
+                        ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
+                        ->searchable()
+                        ->sortable(),
+
+**insert after actions and filters
+->bulkActions([
+                Tables\Actions\BulkActionGroup::make($bulkActions)
+                    ->label('Actions')
+            ]);
+            }
+
+
+**********making tab

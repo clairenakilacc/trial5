@@ -3,6 +3,8 @@
 namespace App\Imports;
 
 use App\Models\Category;
+use App\Models\User;
+
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -31,6 +33,8 @@ class CategoryImport implements ToModel, WithHeadingRow
         // Prepare data array with null checks
         $data = [
             'description' => $categoryDescription,
+            'user_id' => $userId ?? null, 
+
         ];
 
         // Create and return new Category instance if the description does not already exist
