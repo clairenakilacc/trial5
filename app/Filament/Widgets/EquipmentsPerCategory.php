@@ -3,8 +3,8 @@
 namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
-use App\Models\Category;
 use App\Models\Equipment;
+use App\Models\Category;
 
 class EquipmentsPerCategory extends ChartWidget
 {
@@ -26,14 +26,14 @@ class EquipmentsPerCategory extends ChartWidget
         $data = [];
 
         foreach ($categories as $category) {
-            $labels[] = $category->name;  // Assuming the 'name' field is the category name
+            $labels[] = $category->description;  // Assuming the 'name' field is the category name
             $data[] = $categoryCounts[$category->id] ?? 0;  // Default to 0 if no equipment in that category
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Number of Equipments',
+                    'label' => 'No. of Equipment',
                     'data' => $data,
                     'backgroundColor' => [
                         'rgba(75, 192, 192, 0.2)',

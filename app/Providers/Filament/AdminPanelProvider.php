@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\UserStatsWidget;
 use App\Filament\Widgets\EquipmentStatusChart;
 use App\Filament\Widgets\EquipmentsPerCategory;
+use App\Filament\Widgets\EquipmentsPerFacility;
 use App\Filament\Widgets\FacilityPerFacilityType;
 
 
@@ -57,10 +58,14 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
-                // UserStatsWidget::class,
-                // BorrowStatsWidget::class,
-                EquipmentStatusChart::class,
+
+                //App\Filament\Widgets\EquipmentPerFacility::class,
+                //Widgets\EquipmentPerCategory::class,
+                UserStatsWidget::class,
+                //BorrowStatsWidget::class,
                 EquipmentsPerCategory::class,
+
+                EquipmentStatusChart::class,
                 FacilityPerFacilityType::class,
             ])
             ->middleware([

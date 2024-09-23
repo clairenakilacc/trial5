@@ -51,19 +51,25 @@ class UserStatsWidget extends BaseWidget
         }
 
         $totalBorrowRecords = Borrow::count();
+        $totalBorrowedToday = Borrow::whereDate('created_at', Carbon::today())->count();
+
 
         return [
             Stat::make('Total Users', $currentTotalUsers)
                 ->chart($userChartData)
-                ->description("{$userIncrease} New Users")
+                ->description("{$userIncrease} New users that joined")
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success'),
 
-            Stat::make('Total Borrow Records', $totalBorrowRecords)
+            Stat::make('Borrowed Iteams Last 7 Days', $totalBorrowRecords)
                 ->chart($borrowChartData)
-                ->description('Borrow activity over the last 7 days')
+                ->description('Borrowed items over the last 7 days')
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color('info'),
+            Stat::make('Total Borrowed Today', $totalBorrowedToday)
+                ->description('Borrowed items today')
+                ->descriptionIcon('heroicon-o-clock')
+                ->color('primary'),
         ];
     }
 }
