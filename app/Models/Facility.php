@@ -19,4 +19,8 @@ class Facility extends Model
         'remarks',
         'facility_img',
     ];
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
 }
