@@ -330,7 +330,7 @@ class EquipmentSummaryResource extends Resource
                                 ->body('Equipment has been added to monitoring histories.')
                                 ->send();
                         }),
-                        Tables\Actions\Action::make('mark_as_for_repair')
+                        /*Tables\Actions\Action::make('mark_as_for_repair')
                             ->label('Mark as For Repair')
                             ->icon('heroicon-o-wrench-screwdriver')
                             ->color('warning')
@@ -382,7 +382,7 @@ class EquipmentSummaryResource extends Resource
                                 ->title('Marked Stock as Critical')
                                 ->body('Equipment stock has been marked as critical and saved to the Critical table.')
                                 ->send();
-                        }),
+                        }),*/
                 ]),
             ])
             ->bulkActions([

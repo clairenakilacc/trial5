@@ -108,14 +108,62 @@ public static function table(Table $table): Table
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
-                Tables\Columns\TextColumn::make('user.name')->label('User')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('equipment.name')->label('Equipment')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('status')->label('Status')->sortable(),
+                //Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Date Created')
+                    ->label('Date Added')
                     ->dateTime('F j, Y h:i A')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Monitored By')
+                    ->sortable()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.description')
+                    ->label('Equipment')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.facility.name')
+                    ->label('Facility')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.status')
+                    ->label('Status')
+                    ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Working' => 'success',
+                        'For Repair' => 'warning',
+                        'For Replacement' => 'primary',
+                        'Lost' => 'danger',
+                        'For Disposal' => 'primary',
+                        'Disposed' => 'danger',
+                        'Borrowed' => 'indigo',
+                        'Excess' => 'gray',
+                        default => 'secondary',  
+
+                    }),
+                Tables\Columns\TextColumn::make('equipment.serial_no')
+                    ->label('Serial No.')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipment.property_no')
+                    ->label('Property No.')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('equipment.control_no')
+                    ->label('Control No.')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('equipment.remarks')
+                    ->label('Remarks')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                
             ])
             ->filters([
                 // Add your custom filters if necessary
