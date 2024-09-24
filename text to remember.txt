@@ -106,3 +106,6 @@ php artisan migrate
 **activity_log is seen in db
 --goto:https://spatie.be/docs/laravel-activitylog/v4/introduction
 
+
+
+***widget filters

@@ -10,10 +10,15 @@ use Carbon\Carbon;
 
 class TotalUserWidget extends BaseWidget
 {
+    //use InteractsWithPageFilters;
+
     protected int | string | array $columnSpan = 3;
 
     protected function getStats(): array
     {
+        //$startDate= $this->filters['startDate'];
+        //$endDate= $this->filters['endDate'];
+
         // User statistics
         $previousTotalUsers = User::whereDate('created_at', Carbon::yesterday())->count();
         $currentTotalUsers = User::count();
