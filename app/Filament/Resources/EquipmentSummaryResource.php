@@ -6,11 +6,16 @@ use App\Filament\Resources\EquipmentSummaryResource\Pages;
 use App\Models\EquipmentMonitoring;
 use App\Models\Equipment;
 use App\Models\User;
+use App\Models\Critical;
+use App\Models\ForRepair;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
+
 
 class EquipmentSummaryResource extends Resource
 {
@@ -282,6 +287,86 @@ class EquipmentSummaryResource extends Resource
                                 ->body('Stock has been successfully adjusted.')
                                 ->send();
                             }
+                        }),
+                        Tables\Actions\Action::make('add_to_monitoring_history')
+                        ->label('Add to Monitoring History')
+                        ->icon('heroicon-o-wrench-screwdriver')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->modalHeading('Add Equipment to Monitoring History')
+                        ->modalDescription('Are you sure you want to add this equipment to monitoring history?')
+                        ->action(function ($record) {
+                            $equipment = Equipment::find($record->id);
+
+                            // Save to the Critical table with status set to "Critical"
+                            ForRepair::create([
+                                'user_id' => auth()->id(),               // The ID of the current user
+                                'equipment_id' => $equipment->id,        // The ID of the equipment
+                                'facility_id' => $equipment->facility_id, // The ID of the facility associated with the equipment
+                                'category_id' => $equipment->category_id,
+                                'serial_no' => $equipment->serial_no,
+                                //'status' => 'Critical',                  // Set the status to "For repair"
+                                //'remarks' => 'Marked as critical',       // Remarks or reason for marking as for repair
+                            ]);
+
+                            Notification::make()
+                                ->success()
+                                ->title('Marked as For Repair')
+                                ->body('Equipment has been marked as for repair.')
+                                ->send();
+                        }),
+                        Tables\Actions\Action::make('mark_as_for_repair')
+                            ->label('Mark as For Repair')
+                            ->icon('heroicon-o-wrench-screwdriver')
+                            ->color('warning')
+                            ->requiresConfirmation()
+                            ->modalHeading('Mark Equipment as For Repair')
+                            ->modalDescription('Are you sure you want to mark this equipment as for repair?')
+                            ->action(function ($record) {
+                                $equipment = Equipment::find($record->id);
+
+                                // Save to the Critical table with status set to "Critical"
+                                ForRepair::create([
+                                    'user_id' => auth()->id(),               // The ID of the current user
+                                    'equipment_id' => $equipment->id,        // The ID of the equipment
+                                    'facility_id' => $equipment->facility_id, // The ID of the facility associated with the equipment
+                                    'category_id' => $equipment->category_id,
+                                    'serial_no' => $equipment->serial_no,
+                                    'status' => 'Critical',                  // Set the status to "For repair"
+                                    'remarks' => 'Marked as critical',       // Remarks or reason for marking as for repair
+                                ]);
+
+                                Notification::make()
+                                    ->success()
+                                    ->title('Marked as For Repair')
+                                    ->body('Equipment has been marked as for repair.')
+                                    ->send();
+                            }),
+                        Tables\Actions\Action::make('mark_as_critical')
+                        ->label('Mark Stock as Critical')
+                        ->icon('heroicon-o-exclamation-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Mark Equipment Stock as Critical')
+                        ->modalDescription('Are you sure you want to mark this equipment stock as critical?')
+                        ->action(function ($record) {
+                            $equipment = Equipment::find($record->id);
+        
+                            // Save to the Critical table with status set to "Critical"
+                            Critical::create([
+                                'user_id' => auth()->id(),               // The ID of the current user
+                                'equipment_id' => $equipment->id,        // The ID of the equipment
+                                'facility_id' => $equipment->facility_id, // The ID of the facility associated with the equipment
+                                'category_id' => $equipment->category_id,
+                                'status' => 'Critical',                  // Set the status to "Critical"
+                                'remarks' => 'Marked as critical',       // Remarks or reason for marking as critical
+                            ]);
+        
+                            Notification::make()
+                                ->success()
+                                ->title('Marked Stock as Critical')
+                                ->body('Equipment stock has been marked as critical and saved to the Critical table.')
+                                ->send();
                         }),
                 ]),
             ])

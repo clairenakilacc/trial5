@@ -61,12 +61,12 @@ class AdminPanelProvider extends PanelProvider
 
                 //App\Filament\Widgets\EquipmentPerFacility::class,
                 //Widgets\EquipmentPerCategory::class,
-                UserStatsWidget::class,
+                //UserStatsWidget::class,
                 //BorrowStatsWidget::class,
-                EquipmentsPerCategory::class,
+                //EquipmentsPerCategory::class,
 
-                EquipmentStatusChart::class,
-                FacilityPerFacilityType::class,
+                //EquipmentStatusChart::class,
+                //FacilityPerFacilityType::class,
             ])
             ->middleware([
                 EncryptCookies::class,

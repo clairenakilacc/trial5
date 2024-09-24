@@ -21,6 +21,7 @@ class CriticalResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
 
     protected static ?string $navigationGroup = 'Importants';
+    protected static ?string $navigationLabel = 'Critical Stocks';
     protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
@@ -55,6 +56,7 @@ class CriticalResource extends Resource
                                     ->relationship('facility', 'name')
                                     ->required()
                                     ->disabled(),
+                                
 
                                 Forms\Components\Select::make('status')
                                     ->options([
@@ -80,6 +82,8 @@ class CriticalResource extends Resource
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('facility.name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.description')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
