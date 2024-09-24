@@ -96,3 +96,13 @@ Widgets\FilamentInfoWidget or AccountWidget::class
 
 **making resource
 --create migration, model, resource, 
+
+**laravel logs:
+--goto:https://github.com/spatie/laravel-activitylog
+composer require spatie/laravel-activitylog
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-config"
+php artisan migrate
+**activity_log is seen in db
+--goto:https://spatie.be/docs/laravel-activitylog/v4/introduction
+

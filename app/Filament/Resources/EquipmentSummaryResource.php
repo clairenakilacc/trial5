@@ -323,7 +323,7 @@ class EquipmentSummaryResource extends Resource
                                 'actions_taken_date' => now()->format('Y-m-d'),
                                 'remarks' => '',
                                 'created_at' => now(),
-                                'updated_at' => now(),
+                                //'updated_at' => now(),
                             ]);
 
                             Notification::make()
