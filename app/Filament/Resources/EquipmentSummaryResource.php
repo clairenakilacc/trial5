@@ -298,10 +298,11 @@ class EquipmentSummaryResource extends Resource
                         ->modalHeading('Add Equipment to Monitoring History')
                         ->modalDescription('Are you sure you want to add this equipment to monitoring history?')
                         ->action(function ($record) {
-                            $equipment = Equipment::find($record->id);
+                            $equipment = Equipment::where('id', $record->id)->first();
+                           // $equipment = Equipment::find($record->id);
 
                             // Save to the Critical table with status set to "Critical"
-                            MonitoringHistory::create([
+                           /* MonitoringHistory::create([
                                 'user_id' => auth()->id(),               // The ID of the current user
                                 'equipment_id' => $equipment->id,        // The ID of the equipment
                                 'facility_id' => $equipment->facility_id, // The ID of the facility associated with the equipment
@@ -310,13 +311,14 @@ class EquipmentSummaryResource extends Resource
                                 'actions_taken' => '',
                                 'actions_taken' => '',
                                 'remarks' => '',       // Remarks or reason for marking as for repair
-                            ]);
+                            ]);*/
                             \DB::table('monitoring_history')->insert([
                                 'user_id' => auth()->id(),
                                 'equipment_id' => $equipment->id,
                                 'facility_id' => $equipment->facility_id,
                                 'category_id' => $equipment->category_id,
                                 'stock_unit_id' => $equipment->stock_unit_id,
+                                //'equipment.status' =>$equipment->status,
                                 'actions_taken' => '',
                                 'actions_taken_date' => now()->format('Y-m-d'),
                                 'remarks' => '',

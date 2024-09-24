@@ -163,6 +163,11 @@ public static function table(Table $table): Table
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('actions_taken')
+                    ->label('Actions Taken')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
                 
             ])
             ->filters([
