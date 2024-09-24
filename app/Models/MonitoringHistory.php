@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class MonitoringHistory extends Model
 {
     use HasFactory;
+    protected $table = 'monitoring_history';
+    
     protected $fillable = [
         'user_id',
         'equipment_id',

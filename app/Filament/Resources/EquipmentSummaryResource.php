@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EquipmentSummaryResource\Pages;
 use App\Models\EquipmentMonitoring;
+
+use App\Models\MonitoringHistory;
 use App\Models\Equipment;
 use App\Models\User;
 use App\Models\Critical;
@@ -289,7 +291,7 @@ class EquipmentSummaryResource extends Resource
                             }
                         }),
                         Tables\Actions\Action::make('add_to_monitoring_history')
-                        ->label('Add to Monitoring History')
+                        ->label('Add to Monitoring Histories')
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->color('warning')
                         ->requiresConfirmation()
@@ -299,20 +301,33 @@ class EquipmentSummaryResource extends Resource
                             $equipment = Equipment::find($record->id);
 
                             // Save to the Critical table with status set to "Critical"
-                            ForRepair::create([
+                            MonitoringHistory::create([
                                 'user_id' => auth()->id(),               // The ID of the current user
                                 'equipment_id' => $equipment->id,        // The ID of the equipment
                                 'facility_id' => $equipment->facility_id, // The ID of the facility associated with the equipment
                                 'category_id' => $equipment->category_id,
-                                'serial_no' => $equipment->serial_no,
-                                //'status' => 'Critical',                  // Set the status to "For repair"
-                                //'remarks' => 'Marked as critical',       // Remarks or reason for marking as for repair
+                                'stock_unit_id' => $equipment->stock_unit_id,
+                                'actions_taken' => '',
+                                'actions_taken' => '',
+                                'remarks' => '',       // Remarks or reason for marking as for repair
+                            ]);
+                            \DB::table('monitoring_history')->insert([
+                                'user_id' => auth()->id(),
+                                'equipment_id' => $equipment->id,
+                                'facility_id' => $equipment->facility_id,
+                                'category_id' => $equipment->category_id,
+                                'stock_unit_id' => $equipment->stock_unit_id,
+                                'actions_taken' => '',
+                                'actions_taken_date' => now()->format('Y-m-d'),
+                                'remarks' => '',
+                                'created_at' => now(),
+                                'updated_at' => now(),
                             ]);
 
                             Notification::make()
                                 ->success()
-                                ->title('Marked as For Repair')
-                                ->body('Equipment has been marked as for repair.')
+                                ->title('Add to Monitoring Histories')
+                                ->body('Equipment has been added to monitoring histories.')
                                 ->send();
                         }),
                         Tables\Actions\Action::make('mark_as_for_repair')

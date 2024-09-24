@@ -94,3 +94,5 @@ Stat::make('New Users', Users::count())
 Widgets\FilamentInfoWidget or AccountWidget::class
 **import wifget aldo inadmin panel
 
+**making resource
+--create migration, model, resource, 
