@@ -66,7 +66,7 @@ class TotalUserWidget extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success'),
 
-            Stat::make('Borrowed Iteams Last 7 Days', $totalBorrowRecords)
+            Stat::make('Borrowed Items Last 7 Days', $totalBorrowRecords)
                 ->chart($borrowChartData)
                 ->description('Borrowed items over the last 7 days')
                 ->descriptionIcon('heroicon-m-calendar')
@@ -77,4 +77,5 @@ class TotalUserWidget extends BaseWidget
                 ->color('primary'),
         ];
     }
+    
 }
