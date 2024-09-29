@@ -22,7 +22,7 @@ class AllEquipment extends BaseWidget
                 ->descriptionIcon('heroicon-m-cube',IconPosition::After )
                 //->chart([1,3,5,10,20])
                 ->color('success'),
-             Stat::make ( '', Facility::count())
+            /* Stat::make ( '', Facility::count())
                 ->description('CCIS Facilities ')
                 ->descriptionIcon('heroicon-m-building-office-2',IconPosition::After )
                 //->chart([1,3,5,10,20])
@@ -31,7 +31,7 @@ class AllEquipment extends BaseWidget
                 ->description('Equipment Categories ')
                 ->descriptionIcon('heroicon-m-funnel',IconPosition::After )
                 //->chart([1,3,5,10,20])
-                ->color('primary')
+                ->color('primary')*/
         ];
     }
     

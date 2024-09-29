@@ -30,7 +30,38 @@ class Dashboard extends \Filament\Pages\Dashboard
 
     public function getColumns(): int
     {
-        return 3; // Adjust the grid to 2 columns to place widgets side by side
+        return 3
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ; // Adjust the grid to 2 columns to place widgets side by side
     }
 
     public function filtersForm(Form $form): Form
