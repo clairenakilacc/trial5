@@ -5,10 +5,11 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
-use App\Models\Equipment;
 use Filament\Support\Enums\IconPosition;
+use App\Models\Facility;
 
-class AllEquipment extends BaseWidget
+
+class AllFacility extends BaseWidget
 {
     use InteractsWithPageFilters;
 
@@ -20,15 +21,13 @@ class AllEquipment extends BaseWidget
         return [
             Stat::make(
                 '',
-                Equipment::when($start, fn($query) => $query->whereDate('created_at', '>=', $start))
-                         ->when($end, fn($query) => $query->whereDate('created_at', '<=', $end))
-                         ->count()
-            )
-            ->description('Total Equipment')
-            ->descriptionIcon('heroicon-m-cube', IconPosition::After)
-            ->color('success'),
+                Facility::when($start, fn($query) => $query->whereDate('created_at', '>=', $start))
+                ->when($end, fn($query) => $query->whereDate('created_at', '<=', $end))
+                ->count()
+                )
+                ->description('Total Facilities')
+                ->descriptionIcon('heroicon-m-building-office-2', IconPosition::After)
+                ->color('info'),
         ];
-
-        
     }
 }

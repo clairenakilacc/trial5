@@ -11,7 +11,10 @@ use App\Filament\Widgets\OtherWidget;
 use App\Filament\Widgets\AllEquipment;
 use App\Filament\Widgets\TotalUserWidget;
 //use App\Filament\Widgets\AllFacilities;
-use App\Filament\Widgets\EquipmentCatStat;
+use App\Filament\Widgets\AllFacility;
+use App\Filament\Widgets\AllCategory;
+
+
 
 
 class Dashboard extends \Filament\Pages\Dashboard
@@ -23,7 +26,9 @@ class Dashboard extends \Filament\Pages\Dashboard
         return [
             TotalUserWidget::class,  // This will appear first
             AllEquipment::class,     // w/ facilities, categories
-           // AllFacilities::class,   
+            AllFacility::class,
+            AllCategory::class,
+            // AllFacilities::class,   
            //EquipmentCatStat::class,
         ];
     }
