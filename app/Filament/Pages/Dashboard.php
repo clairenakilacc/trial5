@@ -21,13 +21,15 @@ class Dashboard extends \Filament\Pages\Dashboard
 {
     use HasFiltersForm;
 
+    public int | string | array $columnSpan = 3;
+
     public function getWidgets(): array
     {
         return [
             TotalUserWidget::class,  // This will appear first
             AllEquipment::class,     // w/ facilities, categories
-            AllFacility::class,
-            AllCategory::class,
+            //AllFacility::class,
+           // AllCategory::class,
             // AllFacilities::class,   
            //EquipmentCatStat::class,
         ];
