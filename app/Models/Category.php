@@ -9,9 +9,14 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
-    public function user()
+    protected $fillable = ['description'];
+
+public function user()
 {
     return $this->belongsTo(User::class);
 }
+public function equipment()
+    {
+        return $this->hasMany(Equipment::class, 'category_id');
+    }
 }
