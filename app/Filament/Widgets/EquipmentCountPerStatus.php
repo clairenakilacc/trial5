@@ -26,6 +26,7 @@ class EquipmentCountPerStatus extends ChartWidget
             ->when($startDate, fn($query) => $query->whereDate('created_at', '>=', Carbon::parse($startDate)))
             ->when($endDate, fn($query) => $query->whereDate('created_at', '<=', Carbon::parse($endDate)))
             ->groupBy('status')
+            ->orderBy('count', 'desc') // Sort by count in descending order
             ->get();
 
         // Prepare labels and data for the chart

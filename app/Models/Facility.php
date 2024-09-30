@@ -23,4 +23,9 @@ class Facility extends Model
 {
     return $this->belongsTo(User::class);
 }
+
+public function equipment()
+    {
+        return $this->hasMany(Equipment::class, 'facility_id');
+    }
 }
