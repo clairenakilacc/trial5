@@ -14,6 +14,8 @@ use App\Filament\Widgets\TotalUserWidget;
 use App\Filament\Widgets\AllFacility;
 use App\Filament\Widgets\AllCategory;
 use App\Filament\Widgets\EquipmentCategoryStatus;
+use App\Filament\Widgets\EquipmentCountPerStatus;
+
 
 
 
@@ -31,6 +33,7 @@ class Dashboard extends \Filament\Pages\Dashboard
             TotalUserWidget::class,  // This will appear first
             AllEquipment::class,     // w/ facilities, categories
             EquipmentCategoryStatus::class,
+            EquipmentCountPerStatus::class,
             //AllFacility::class,
            // AllCategory::class,
             // AllFacilities::class,   
