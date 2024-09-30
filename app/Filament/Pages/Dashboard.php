@@ -24,7 +24,7 @@ class Dashboard extends \Filament\Pages\Dashboard
             TotalUserWidget::class,  // This will appear first
             AllEquipment::class,     // w/ facilities, categories
            // AllFacilities::class,   
-           EquipmentCatStat::class,
+           //EquipmentCatStat::class,
         ];
     }
 
