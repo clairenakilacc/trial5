@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EquipmentSummaryResource\Pages;
 use App\Models\EquipmentMonitoring;
+use App\Models\StockMonitoring;
 
 use App\Models\MonitoringHistory;
 use App\Models\Equipment;
@@ -132,7 +133,7 @@ class EquipmentSummaryResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make('view_monitoring')
-                        ->label('View Records')
+                        ->label('View Equipment Records')
                         ->icon('heroicon-o-presentation-chart-line')
                         ->color('info')
                         ->modalHeading('Monitoring Records')
@@ -145,6 +146,21 @@ class EquipmentSummaryResource extends Resource
                                 'monitorings' => $monitorings,
                             ]);
                         }),
+                       
+                    
+                        /*->action(function ($record) {
+                            $stockHistory = \App\Models\StockMonitoring::where('equipment_id', $record->id)
+                                ->with('user') // Assuming 'monitored_by' is related to the 'users' table
+                                ->orderBy('deducted_at', 'desc')
+                                ->get();
+                    
+                            return view('filament.resources.stock-monitoring-modal', [
+                                'stockHistory' => $stockHistory,
+                            ]);
+                        }),*/
+                        
+                        
+
                     Tables\Actions\Action::make('Update Status')
                         ->icon('heroicon-o-plus')
                         ->color('primary')
@@ -252,45 +268,72 @@ class EquipmentSummaryResource extends Resource
                                 ->body('Selected items have been added to your monitoring.')
                                 ->send();
                         }),
-                    Tables\Actions\Action::make('AdjustStock')
-                        ->icon('heroicon-o-minus')
+
+                        Tables\Actions\Action::make('AdjustStock')
+                        ->icon('heroicon-o-pencil')
                         ->color('warning')
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-pencil')
                         ->modalHeading('Adjust Stock')
-                        ->modalDescription('Enter the quantity to deduct from stocks.')
+                        ->modalDescription('Enter the quantity to adjust stocks.')
                         ->form(function (Forms\Form $form, $record) {
                             return $form->schema([
+                                Forms\Components\Select::make('action_type')
+                                    ->label('Action Type')
+                                    ->options([
+                                        'add' => 'Add Stock',
+                                        'deduct' => 'Deduct Stock',
+                                    ])
+                                    ->required(),
                                 Forms\Components\TextInput::make('quantity')
-                                    ->label('Quantity to deduct from its stocks')
+                                    ->label('Quantity')
                                     ->required()
                                     ->numeric()
                                     ->minValue(1)
-                                    ->maxValue($record->no_of_stocks)
+                                    ->maxValue($record->no_of_stocks + 100) // Adjust maxValue for adding
                                     ->hint("Available stock: {$record->no_of_stocks}")
                                     ->required(),
                             ]);
                         })
                         ->action(function (array $data, $record) {
-                            $newStock = $record->no_of_stocks - $data['quantity'];
-                            if ($newStock < 0) {
-                                Notification::make()
-                                ->danger()
-                                ->title('Error')
-                                ->body('Insufficient stock. Cannot deduct more than available stock.')
-                                ->send();
-                        } else {
-
+                            if ($data['action_type'] === 'deduct') {
+                                $newStock = $record->no_of_stocks - $data['quantity'];
+                                if ($newStock < 0) {
+                                    Notification::make()
+                                        ->danger()
+                                        ->title('Error')
+                                        ->body('Insufficient stock. Cannot deduct more than available stock.')
+                                        ->send();
+                                    return;
+                                }
+                            } else {
+                                $newStock = $record->no_of_stocks + $data['quantity'];
+                            }
+                    
+                            \App\Models\StockMonitoring::create([
+                                'equipment_id' => $record->id,
+                                'facility_id' => $record->facility_id,
+                                'monitored_by' => auth()->user()->id,
+                                'no_of_stocks' => $record->no_of_stocks,
+                                'no_of_stocks_deducted' => $data['action_type'] === 'deduct' ? $data['quantity'] : 0,
+                                'no_of_stocks_added' => $data['action_type'] === 'add' ? $data['quantity'] : 0,
+                                'stocks_left' => $newStock,
+                                'deducted_at' => $data['action_type'] === 'deduct' ? now() : null,
+                                'added_at' => $data['action_type'] === 'add' ? now() : null,
+                            ]);
+                    
                             $record->update(['no_of_stocks' => $newStock]);
-    
+                    
                             Notification::make()
                                 ->success()
                                 ->title('Stock Adjusted')
                                 ->body('Stock has been successfully adjusted.')
                                 ->send();
-                            }
                         }),
-                        Tables\Actions\Action::make('add_to_monitoring_history')
+                    
+                   
+                        
+                        /*Tables\Actions\Action::make('add_to_monitoring_history')
                         ->label('Add to Monitoring Histories')
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->color('warning')
@@ -300,9 +343,9 @@ class EquipmentSummaryResource extends Resource
                         ->action(function ($record) {
                             $equipment = Equipment::where('id', $record->id)->first();
                            // $equipment = Equipment::find($record->id);
-
-                            // Save to the Critical table with status set to "Critical"
-                           /* MonitoringHistory::create([
+                            
+                             Save to the Critical table with status set to "Critical"
+                            MonitoringHistory::create([
                                 'user_id' => auth()->id(),               // The ID of the current user
                                 'equipment_id' => $equipment->id,        // The ID of the equipment
                                 'facility_id' => $equipment->facility_id, // The ID of the facility associated with the equipment
@@ -312,7 +355,7 @@ class EquipmentSummaryResource extends Resource
                                 'actions_taken' => '',
                                 'remarks' => '',       // Remarks or reason for marking as for repair
                             ]);*/
-                            \DB::table('monitoring_history')->insert([
+                            /*\DB::table('monitoring_history')->insert([
                                 'user_id' => auth()->id(),
                                 'equipment_id' => $equipment->id,
                                 'facility_id' => $equipment->facility_id,
@@ -331,7 +374,7 @@ class EquipmentSummaryResource extends Resource
                                 ->title('Add to Monitoring Histories')
                                 ->body('Equipment has been added to monitoring histories.')
                                 ->send();
-                        }),
+                        }),*/
                         /*Tables\Actions\Action::make('mark_as_for_repair')
                             ->label('Mark as For Repair')
                             ->icon('heroicon-o-wrench-screwdriver')

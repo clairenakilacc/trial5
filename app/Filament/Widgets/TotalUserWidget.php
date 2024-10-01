@@ -73,7 +73,7 @@ class TotalUserWidget extends BaseWidget
                 ->color('info'),
             Stat::make('Total Borrowed Today', $totalBorrowedToday)
                 ->description('Borrowed items today')
-                ->descriptionIcon('heroicon-o-clock')
+                ->descriptionIcon('heroicon-m-inbox-arrow-down')
                 ->color('primary'),
         ];
     }

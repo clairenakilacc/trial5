@@ -109,3 +109,29 @@ php artisan migrate
 
 
 ***widget filters
+
+
+
+view stock: Tables\Actions\ViewAction::make('ViewStockMonitoring')
+                        ->label('View Stock Records')
+                        ->icon('heroicon-o-presentation-chart-bar')
+                        ->color('info')
+                        ->modalHeading('Stock Monitoring Records')
+                        ->modalcontent(function ($record) {
+                            // Retrieve stock history
+                            $stockHistory = \App\Models\StockMonitoring::where('equipment_id', $record->id)
+                                ->with('user') // Assuming 'monitored_by' is related to the 'users' table
+                                ->orderBy('deducted_at', 'desc')
+                                ->get();
+                    
+                            // Debugging output
+                            if ($stockHistory->isEmpty()) {
+                                \Log::info("No stock history found for equipment ID: " . $record->id);
+                            } else {
+                                \Log::info("Stock history retrieved for equipment ID: " . $record->id);
+                            }
+                    
+                            return view('filament.resources.stock-monitoring-modal', [
+                                'stockHistory' => $stockHistory,
+                            ]);
+                        }),
