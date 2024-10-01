@@ -13,12 +13,11 @@ class StockMonitoring extends Model
         'equipment_id',
         'facility_id',
         'monitored_by',
-        'no_of_stocks',
-        'no_of_stocks_deducted',
-        'stocks_left',
-        'deducted_at',
-        //'added_at',
-        'no_of_stocks_added', // Add the new column to fillable
+        'available_stock',
+        'action_type',
+        'stock_quantity',
+        'new_stock',
+        'created_at',
     ];
 
     /**

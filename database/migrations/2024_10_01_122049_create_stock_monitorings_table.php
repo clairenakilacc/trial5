@@ -16,12 +16,10 @@ return new class extends Migration
             $table->foreignId('equipment_id')->constrained()->onDelete('cascade');
             $table->foreignId('facility_id')->constrained()->onDelete('cascade');
             $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade');
-            $table->string('no_of_stocks')->nullable();
-            $table->string('no_of_stocks_deducted')->nullable();
-            $table->string('stocks_left')->nullable();
-            $table->string('deducted_at')->nullable();
-            $table->string('no_of_stocks_added')->nullable();
-            $table->timestamp('added_at')->nullable();    
+            $table->unsignedInteger('available_stock')->nullable();
+            $table->string('action_type'); // 'add' or 'deduct'
+            $table->unsignedInteger('stock_quantity'); // Amount added or deducted
+            $table->unsignedInteger('new_stock'); // Resulting stock after action
             $table->timestamps();
         });
     }
