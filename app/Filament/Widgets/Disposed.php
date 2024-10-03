@@ -4,15 +4,14 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
 use App\Models\Equipment;
-use App\Models\Category;
 use Illuminate\Support\Carbon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
-class EquipmentCountPerCategory extends ChartWidget
+class Disposed extends ChartWidget
 {
-    use InteractsWithPageFilters; // Use to interact with page filters
+    use InteractsWithPageFilters;
 
-    protected static ?string $heading = 'Equipment Count per Category';
+    protected static ?string $heading = 'Equipment Count (Disposed) by Category';
     protected static string $color = 'primary';
     protected int | string | array $columnSpan = 3;
 
@@ -22,30 +21,32 @@ class EquipmentCountPerCategory extends ChartWidget
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
 
-        // Fetch all categories and their equipment counts within the date range
-        $categories = Category::withCount(['equipment' => function ($query) use ($startDate, $endDate) {
-            if ($startDate) {
+        // Fetch all categories and count their equipment with status 'For Disposal' within the date range
+        $categories = Equipment::where('status', 'Disposed')
+            ->when($startDate, function ($query) use ($startDate) {
                 $query->whereDate('created_at', '>=', Carbon::parse($startDate));
-            }
-            if ($endDate) {
+            })
+            ->when($endDate, function ($query) use ($endDate) {
                 $query->whereDate('created_at', '<=', Carbon::parse($endDate));
-            }
-        }])->get();
+            })
+            ->selectRaw('category_id, COUNT(*) as count')
+            ->groupBy('category_id')
+            ->with('category')
+            ->get();
 
         // Create an array to hold category descriptions and their equipment counts
         $categoryData = [];
 
-        // Populate the category data array
         foreach ($categories as $category) {
             $categoryData[] = [
-                'description' => $category->description,
-                'count' => $category->equipment_count,
+                'description' => $category->category->description ?? 'Unknown',
+                'count' => (int)$category->count,
             ];
         }
 
-        // Sort the category data by equipment count in descending order
+        // Sort the data by equipment count in descending order
         usort($categoryData, function ($a, $b) {
-            return $b['count'] <=> $a['count']; // Sort descending
+            return $b['count'] <=> $a['count'];
         });
 
         // Extract sorted labels and data
@@ -55,12 +56,12 @@ class EquipmentCountPerCategory extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => "Equipment Count",
+                    'label' => "Equipment Count (Disposed)",
                     'data' => $data,
-                    'backgroundColor' => '#f4b028', // Customize bar color
+                    'backgroundColor' => '#ff4500', // Customize the bar color
                 ],
             ],
-            'labels' => $labels, // Use sorted category descriptions as labels
+            'labels' => $labels,
         ];
     }
 
@@ -72,7 +73,7 @@ class EquipmentCountPerCategory extends ChartWidget
     protected function getOptions(): array
     {
         return [
-            'indexAxis' => 'y', // Rotates chart to horizontal
+            'indexAxis' => 'y', // Horizontal bar chart
         ];
     }
 }

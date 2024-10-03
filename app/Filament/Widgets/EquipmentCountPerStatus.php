@@ -38,7 +38,7 @@ class EquipmentCountPerStatus extends ChartWidget
                 [
                     'label' => "Equipment Count",
                     'data' => $data,
-                    'backgroundColor' => '#ffa500', // Customize bar color
+                    'backgroundColor' => '#ffa000', // Customize bar color
                 ],
             ],
             'labels' => $labels, // Use status labels

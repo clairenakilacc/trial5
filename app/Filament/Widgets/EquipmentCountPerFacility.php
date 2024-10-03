@@ -57,7 +57,7 @@ class EquipmentCountPerFacility extends ChartWidget
                 [
                     'label' => "Equipment Count",
                     'data' => $data,
-                    'backgroundColor' => '#ffa500', // Customize bar color
+                    'backgroundColor' => '#d87e0a', // Customize bar color
                 ],
             ],
             'labels' => $labels, // Use sorted category descriptions as labels

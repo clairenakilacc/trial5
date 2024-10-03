@@ -16,6 +16,15 @@ use App\Filament\Widgets\AllCategory;
 use App\Filament\Widgets\EquipmentCountPerCategory;
 use App\Filament\Widgets\EquipmentCountPerStatus;
 use App\Filament\Widgets\EquipmentCountPerFacility;
+use App\Filament\Widgets\ForDisposal;
+use App\Filament\Widgets\Disposed;
+use App\Filament\Widgets\PersonLiable;
+use App\Filament\Widgets\FacilityPerFloorLevel;
+
+
+
+
+
 
 
 
@@ -37,6 +46,10 @@ class Dashboard extends \Filament\Pages\Dashboard
             EquipmentCountPerCategory::class,
             EquipmentCountPerStatus::class,
             EquipmentCountPerFacility::class,
+            ForDisposal::class,
+            Disposed::class,
+            FacilityPerFloorLevel::class,
+            PersonLiable::class,
             //AllFacility::class,
            // AllCategory::class,
             // AllFacilities::class,   
