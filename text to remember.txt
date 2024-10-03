@@ -135,3 +135,10 @@ view stock: Tables\Actions\ViewAction::make('ViewStockMonitoring')
                                 'stockHistory' => $stockHistory,
                             ]);
                         }),
+
+
+
+******making print pdf in dashboard
+composer require barryvdh/laravel-dompdf
+// Create a Route for PDF Generation
+//Define a route in your web.php for generating the PDF.

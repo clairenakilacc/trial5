@@ -23,15 +23,6 @@ use App\Filament\Widgets\FacilityPerFloorLevel;
 
 
 
-
-
-
-
-
-
-
-
-
 class Dashboard extends \Filament\Pages\Dashboard
 {
     use HasFiltersForm;
