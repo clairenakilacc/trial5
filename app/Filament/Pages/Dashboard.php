@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Pages\Actions\Action; 
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
@@ -20,6 +21,8 @@ use App\Filament\Widgets\ForDisposal;
 use App\Filament\Widgets\Disposed;
 use App\Filament\Widgets\PersonLiable;
 use App\Filament\Widgets\FacilityPerFloorLevel;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
 
 
 
@@ -32,7 +35,7 @@ class Dashboard extends \Filament\Pages\Dashboard
     public function getWidgets(): array
     {
         return [
-            TotalUserWidget::class,  // This will appear first
+            TotalUserWidget::class,  
             AllEquipment::class,     // w/ facilities, categories
             EquipmentCountPerCategory::class,
             EquipmentCountPerStatus::class,
@@ -50,38 +53,7 @@ class Dashboard extends \Filament\Pages\Dashboard
 
     public function getColumns(): int
     {
-        return 3
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        ; // Adjust the grid to 2 columns to place widgets side by side
+        return 3;
     }
 
     public function filtersForm(Form $form): Form
@@ -91,6 +63,37 @@ class Dashboard extends \Filament\Pages\Dashboard
             DatePicker::make('startDate'),
             DatePicker::make('endDate'),
             //Toggle::make('active'),
-        ])->columns(2);
+        ])->columns(3);
+    }
+
+    public function exportToWord()
+    {
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
+        
+        // Example: Add some content to the Word document from widgets
+        $section->addText("Dashboard Widgets Summary");
+
+        $totalEquipment = \App\Models\Equipment::count();
+        $section->addText("Total Equipment: " . $totalEquipment);
+        //$section->addText("Equipment by Category: " . EquipmentCountPerCategory::count());
+
+        // Save the file
+        $filename = 'dashboard-widgets-summary.docx';
+        $tempFile = tempnam(sys_get_temp_dir(), $filename);
+        $phpWord->save($tempFile, 'Word2007');
+
+        return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
+    }
+
+
+    protected function getActions(): array
+    {
+        return [
+            Action::make('exportToWord')
+                ->label('Export to Word')
+                ->action('exportToWord')  // Link this to the export function
+                ->icon('heroicon-o-document-arrow-down')
+        ];
     }
 }

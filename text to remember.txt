@@ -142,3 +142,6 @@ view stock: Tables\Actions\ViewAction::make('ViewStockMonitoring')
 composer require barryvdh/laravel-dompdf
 // Create a Route for PDF Generation
 //Define a route in your web.php for generating the PDF.
+
+****export to word:
+composer require phpoffice/phpword
