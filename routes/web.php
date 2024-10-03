@@ -17,9 +17,9 @@ use App\Http\Controllers\MonitoringController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('admin/login');
 });
-
+/*
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/equipment-monitorings', [MonitoringController::class, 'index'])->name('equipment-monitorings.index');
-});
+});*/
 
 
 
