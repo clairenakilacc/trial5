@@ -26,7 +26,7 @@ class BorrowListResource extends Resource
 
     protected static ?string $navigationGroup = 'Borrowing';
 
-    protected static ?string $navigationLabel = 'Request List';
+    protected static ?string $navigationLabel = 'Borrow List';
     protected static ?int $navigationSort = 3;
 
     public static function getNavigationBadge(): ?string

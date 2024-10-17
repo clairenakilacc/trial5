@@ -6,15 +6,16 @@ use App\Filament\Resources\RequestListResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListRequestLists extends ListRecords
+class ListRequestList extends ListRecords
 {
     protected static string $resource = RequestListResource::class;
     protected ?string $heading = 'Request List';
+    protected static ?string $navigationIcon = 'shopping-cart';
 
-    protected function getHeaderActions(): array
+   /* protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
         ];
-    }
+    }*/
 }
