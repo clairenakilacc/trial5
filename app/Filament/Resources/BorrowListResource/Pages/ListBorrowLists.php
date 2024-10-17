@@ -11,7 +11,7 @@ class ListBorrowLists extends ListRecords
 {
     protected static string $resource = BorrowListResource::class;
 
-    protected ?string $heading = 'Borrow Lists';
+    protected ?string $heading = 'Request List';
     
     protected function getTableQuery(): ?Builder
     {
