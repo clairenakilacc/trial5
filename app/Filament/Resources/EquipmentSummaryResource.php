@@ -41,14 +41,17 @@ class EquipmentSummaryResource extends Resource
                 Tables\Columns\TextColumn::make('unit_no')
                     ->label('Unit no.')
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('facility.name')
                     ->searchable()
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category.description')
                     ->searchable()
@@ -58,6 +61,7 @@ class EquipmentSummaryResource extends Resource
                     ->badge()
                     ->searchable()
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->color(fn(string $state): string => match ($state) {
                         'Working' => 'success',
                         'For Repair' => 'warning',
