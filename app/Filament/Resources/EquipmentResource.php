@@ -6,7 +6,8 @@ use App\Filament\Resources\EquipmentResource\Pages;
 use App\Filament\Resources\EquipmentResource\RelationManagers;
 use App\Models\Equipment;
 use App\Models\Facility;
-use App\Models\BorrowList;
+//use App\Models\BorrowList;
+use App\Models\RequestList;
 use App\Models\StockUnit;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -138,14 +139,14 @@ class EquipmentResource extends Resource
         // Define the bulk actions array
         $bulkActions = [
             Tables\Actions\DeleteBulkAction::make(),
-            Tables\Actions\BulkAction::make('add_to_borrow_list')
-                ->label('Add to Borrow Lists')
+            Tables\Actions\BulkAction::make('add_to_request_list')
+                ->label('Add to Request List')
                 ->icon('heroicon-o-shopping-cart')
                 ->action(function (Collection $records) {
                     foreach ($records as $record) {
                         $facilityId = Facility::first()->id;
 
-                        BorrowList::updateOrCreate(
+                        RequestList::updateOrCreate(
                             [
                                 'user_id' => auth()->id(),
                                 'equipment_id' => $record->id,
@@ -157,14 +158,14 @@ class EquipmentResource extends Resource
                     Notification::make()
                         ->success()
                         ->title('Success')
-                        ->body('Selected items have been added to your borrow lists.')
+                        ->body('Selected item/s have been added to your request list.')
                         ->send();
                 })
                 ->color('primary')
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-check')
-                ->modalHeading('Add to Borrow Lists')
-                ->modalDescription('Confirm to add selected items to your borrow lists'),
+                ->modalHeading('Add to Request List')
+                ->modalDescription('Confirm to add selected item/s to your request list'),
         ];
 
         // Conditionally add ExportBulkAction

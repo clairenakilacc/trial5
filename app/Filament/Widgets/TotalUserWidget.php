@@ -63,7 +63,7 @@ class TotalUserWidget extends BaseWidget
             Stat::make('Total Users', $currentTotalUsers)
                 ->chart($userChartData)
                 ->description("{$userIncrease} New users that joined")
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->descriptionIcon('heroicon-m-user-plus')
                 ->color('success'),
 
             Stat::make('Borrowed Items Last 7 Days', $totalBorrowRecords)

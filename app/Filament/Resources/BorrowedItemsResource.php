@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BorrowResource\Pages;
-use App\Filament\Resources\BorrowResource\RelationManagers;
-use App\Models\Borrow;
+use App\Filament\Resources\BorrowedItemsResource\Pages;
+use App\Filament\Resources\BorrowedItemsResource\RelationManagers;
+use App\Models\BorrowedItems;
 use App\Models\RequestList;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,13 +19,13 @@ use Illuminate\Database\Eloquent\Collection;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 
 
-class BorrowResource extends Resource
+class BorrowedItemsResource extends Resource
 {
-    protected static ?string $model = Borrow::class;
+    protected static ?string $model = BorrowedItems::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-inbox-arrow-down';
 
-    protected static ?string $navigationGroup = 'Borrowing';
+    //protected static ?string $navigationGroup = 'Borrowing';
     protected static ?string $navigationLabel = 'Borrowed Items';
     protected static ?int $navigationSort = 3;
 
@@ -97,7 +97,7 @@ class BorrowResource extends Resource
                 $bulkActions[] = ExportBulkAction::make();
             }
             return $table
-            ->query(Borrow::with('user'))
+            ->query(BorrowedItems::with('user'))
             ->columns([
 
        /* return $table
@@ -125,6 +125,7 @@ class BorrowResource extends Resource
                 Tables\Columns\TextColumn::make('borrowed_by')
                     ->label('Borrowed By')    
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Requested Equipment')
@@ -192,36 +193,48 @@ class BorrowResource extends Resource
                 Tables\Columns\TextColumn::make('request_form')
                 ->label('Signed Request Form')
                 ->sortable()
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->formatStateUsing(fn (string $state): string => basename($state)),
 
                 Tables\Columns\TextColumn::make('purpose')
                 ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->sortable(),
                 Tables\Columns\TextColumn::make('start_date_and_time_of_use')
                 ->searchable()
                 ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->sortable(),
                 Tables\Columns\TextColumn::make('end_date_and_time_of_use')
                 ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
                 ->sortable(),
                 Tables\Columns\TextColumn::make('expected_return_date')
                 ->searchable()
+                ->toggleable(isToggledHiddenByDefault: false)
                 ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
                 ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Availability')
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('returned_date')
-                    ->label('Date Returned')
-                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
-                    ->sortable(),
                     //Tables\Columns\TextColumn::make('request_status'),
                 Tables\Columns\TextColumn::make('remarks')
                 ->label('Remarks')
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: false)
+                ->searchable(),
+                Tables\Columns\TextColumn::make('returned_date')
+                ->label('Date Returned')
+                ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('F j, Y g:i A'))
+                ->toggleable(isToggledHiddenByDefault: false)
+                ->sortable(),
+                Tables\Columns\TextColumn::make('received_by')
+                ->label('Received By')
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true)
                 ->searchable(),
                
 
@@ -252,7 +265,7 @@ class BorrowResource extends Resource
                         })
                         ->color('info'),
                     Tables\Actions\Action::make('updateStatus')
-                        ->label('Update')
+                        ->label('Update Return Status')
                         ->color('danger')
                         ->icon('heroicon-o-pencil')
                         ->form([
@@ -309,6 +322,7 @@ class BorrowResource extends Resource
                                 'status' => $data['status'],
                                 'returned_date' => $data['returned_date']?? null,
                                 'remarks' => $data['remarks']?? null,
+                                'received_by' => $data['received_by']?? null,
                             ]);
 
                             // Update the record with the new status, returned date, and remarks
@@ -317,24 +331,25 @@ class BorrowResource extends Resource
                                 'status' => $data['status'],
                                 'returned_date' => $data['status'] === 'Returned' ? $data['returned_date'] : null,
                                 'remarks' => $data['status'] === 'Returned' ? $data['remarks'] : null,
+                                'received_by' => $data['status'] === 'Returned' ? $data['received_by'] : null,
                             ]);
 
                             // Check if the record was updated successfully
                             if ($record->wasChanged()) {
                                 Notification::make()
-                                    ->title('Status Updated')
+                                    ->title('Return Status Updated')
                                     ->success()
-                                    ->body('The status has been updated successfully.')
+                                    ->body('The return status has been updated successfully.')
                                     ->send();
                             } else {
                                 Notification::make()
                                     ->title('No Changes Detected')
                                     ->warning()
-                                    ->body('The status did not change.')
+                                    ->body('The return status did not change.')
                                     ->send();
                             }
                         })
-                        ->modalHeading('Update Equipment Status')
+                        ->modalHeading('Update Equipment Return Status')
                         ->color('success'),
                 ]),
             ])
@@ -367,8 +382,8 @@ class BorrowResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBorrows::route('/'),
-            'create' => Pages\CreateBorrow::route('/create'),
+            'index' => Pages\ListBorrowedItems::route('/'),
+            'create' => Pages\CreateBorrowedItems::route('/create'),
             //'edit' => Pages\EditBorrow::route('/{record}/edit'),
         ];
     }

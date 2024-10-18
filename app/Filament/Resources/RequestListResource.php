@@ -6,7 +6,7 @@ use App\Filament\Resources\RequestListResource\Pages;
 use App\Filament\Resources\RequestListtResource\RelationManagers;
 use App\Models\RequestList;
 use App\Models\User;
-use App\Models\Borrow;
+use App\Models\BorrowedItems;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -111,7 +111,27 @@ class RequestListResource extends Resource
                                 ->required()
                                 ->default('Course/Class Lecture')
                                 ->placeholder('Project Requirements etc.,'),
-                            Forms\Components\DateTimePicker::make('date_and_time_of_use')
+                            Forms\Components\DateTimePicker::make('start_date_and_time_of_use')
+                                ->native(false)
+                                ->format('M d, Y h:i A')
+                                ->closeOnDateSelection(false)
+                                ->withoutSeconds()
+                                ->default(now('Asia/Manila'))                               
+                                ->required()
+                                ->extraAttributes([
+                                    'data-clock-format' => '12', 
+                                ]),
+                            Forms\Components\DateTimePicker::make('end_date_and_time_of_use')
+                                ->native(false)
+                                ->format('M d, Y h:i A')
+                                ->closeOnDateSelection(false)
+                                ->withoutSeconds()
+                                ->default(now('Asia/Manila'))                               
+                                ->required()
+                                ->extraAttributes([
+                                    'data-clock-format' => '12', 
+                                ]),
+                            Forms\Components\DateTimePicker::make('expected_return_date')
                                 ->native(false)
                                 ->format('M d, Y h:i A')
                                 ->closeOnDateSelection(false)
@@ -141,7 +161,7 @@ class RequestListResource extends Resource
                             $requestlist = RequestList::find($record->id);
 
                             if ($requestlist) {
-                                Borrow::create([
+                                BorrowedItems::create([
                                     'user_id' => $requestlist->user_id,
                                     'equipment_id' => $requestlist->equipment_id,
                                     'facility_id' => $requestlist->facility_id,
@@ -150,10 +170,13 @@ class RequestListResource extends Resource
                                     'request_form' => $data['request_form'],
                                     'date' => now(),
                                     'purpose' => $data['purpose'],
-                                    'date_and_time_of_use' => $data['date_and_time_of_use'],
+                                    'start_date_and_time_of_use' => $data['start_date_and_time_of_use'],
+                                    'end_date_and_time_of_use' => $data['end_date_and_time_of_use'],
+                                    'expected_return_date' => $data['expected_return_date'],
+                                    'received_by' => $data['received_by'],
                                     'college_department_office' => $data['college_department_office'],
                                     'borrowed_date' => now(),
-                                    'remarks' => 'test',
+                                    'remarks' => '',
                                 ]);
 
                                 $requestlist->delete();
@@ -161,13 +184,13 @@ class RequestListResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Success')
-                                    ->body('Selected items have been transferred to borrowed items.')
+                                    ->body('Selected item/s have been transferred to borrowed items.')
                                     ->send();
                             } else {
                                 Notification::make()
                                     ->error()
                                     ->title('Error')
-                                    ->body('Borrow list record not found.')
+                                    ->body('Request list record not found.')
                                     ->send();
                             }
                         } else {
@@ -196,11 +219,13 @@ class RequestListResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Created By')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                
                 Tables\Columns\TextColumn::make('equipment.description')
                     ->label('Equipment')
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.unit_no')
                     ->label('Unit Number')
@@ -210,15 +235,18 @@ class RequestListResource extends Resource
                     ->label('Facility')
                     ->formatStateUsing(fn (string $state): string => strtoupper($state))
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->formatStateUsing(fn($state) => $state ?? $state->equipment->facility->name ?? 'N/A'),
 
                 Tables\Columns\TextColumn::make('equipment.category.description')
                     ->label('Category')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('equipment.status')
                     ->label('Status')
                     ->badge()
                     ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->color(fn(string $state): string => match ($state) {
                         'Working' => 'success',
                         'For Repair' => 'warning',
@@ -281,7 +309,27 @@ class RequestListResource extends Resource
                                         ->required()
                                         ->default('Course/Class Lecture')
                                         ->placeholder('Project Requirements etc.,'),
-                                    Forms\Components\DateTimePicker::make('date_and_time_of_use')
+                                    Forms\Components\DateTimePicker::make('start_date_and_time_of_use')
+                                    ->native(false)
+                                    ->format('M d, Y h:i A')
+                                    ->closeOnDateSelection(false)
+                                    ->withoutSeconds()
+                                    ->default(now('Asia/Manila'))                               
+                                    ->required()
+                                    ->extraAttributes([
+                                        'data-clock-format' => '12', 
+                                    ]),
+                                    Forms\Components\DateTimePicker::make('end_date_and_time_of_use')
+                                    ->native(false)
+                                    ->format('M d, Y h:i A')
+                                    ->closeOnDateSelection(false)
+                                    ->withoutSeconds()
+                                    ->default(now('Asia/Manila'))                               
+                                    ->required()
+                                    ->extraAttributes([
+                                        'data-clock-format' => '12', 
+                                    ]),
+                                    Forms\Components\DateTimePicker::make('expected_return_date')
                                     ->native(false)
                                     ->format('M d, Y h:i A')
                                     ->closeOnDateSelection(false)
@@ -312,7 +360,7 @@ class RequestListResource extends Resource
                                     $requestlist = RequestList::find($record->id);
 
                                     if ($requestlist) {
-                                        Borrow::create([
+                                        BorrowedItems::create([
                                             'user_id' => $requestlist->user_id,
                                             'equipment_id' => $requestlist->equipment_id,
                                             'facility_id' => $requestlist->facility_id,
@@ -321,7 +369,9 @@ class RequestListResource extends Resource
                                             'date' => now(),
                                             'purpose' => $data['purpose'],
                                             'borrowed_by' => $data['borrowed_by'],
-                                            'date_and_time_of_use' => $data['date_and_time_of_use'],
+                                            'start_date_and_time_of_use' => $data['start_date_and_time_of_use'],
+                                            'end_date_and_time_of_use' => $data['end_date_and_time_of_use'],
+                                            'expected_return_date' => $data['expected_return_date'],
                                             'college_department_office' => $data['college_department_office'],
                                             'borrowed_date' => now()->format('Y-m-d h:i A'),
                                         ]);
@@ -333,7 +383,7 @@ class RequestListResource extends Resource
                                 Notification::make()
                                     ->success()
                                     ->title('Success')
-                                    ->body('Selected items have been transferred to borrowed items.')
+                                    ->body('Selected item/s have been transferred to borrowed items.')
                                     ->send();
                             } else {
                                 Notification::make()
@@ -348,7 +398,7 @@ class RequestListResource extends Resource
                         ->requiresConfirmation()
                         ->modalIcon('heroicon-o-check')
                         ->modalHeading('Add to Borrowed Items')
-                        ->modalDescription('Confirm to add selected items to your borrowed items.'),
+                        ->modalDescription('Confirm to add selected item/s to your borrowed items.'),
                 ])
             ]);
     }
