@@ -25,9 +25,9 @@ class BorrowedItemsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-inbox-arrow-down';
 
-    //protected static ?string $navigationGroup = 'Borrowing';
+    protected static ?string $navigationGroup = 'Borrowing';
     protected static ?string $navigationLabel = 'Borrowed Items';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     // public static function getNavigationBadge(): ?string
     // {

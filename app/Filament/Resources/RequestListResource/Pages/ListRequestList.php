@@ -12,7 +12,13 @@ class ListRequestList extends ListRecords
     protected ?string $heading = 'Request List';
     protected static ?string $navigationIcon = 'shopping-cart';
 
-   /* protected function getHeaderActions(): array
+    // Override to remove breadcrumbs
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
+
+    /*protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

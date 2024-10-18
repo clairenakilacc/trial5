@@ -24,10 +24,10 @@ class RequestListResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    //protected static ?string $navigationGroup = 'Borrowing';
+    protected static ?string $navigationGroup = 'Borrowing';
 
     protected static ?string $navigationLabel = 'Request List';
-   //protected static ?int $navigationSort = 3;
+   protected static ?int $navigationSort = 3;
 
     public static function getNavigationBadge(): ?string
     {
