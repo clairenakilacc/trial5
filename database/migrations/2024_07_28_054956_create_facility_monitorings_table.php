@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('facility_monitorings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
-            $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade');
-            $table->string('monitored_date')->nullable();
-            $table->string('remarks')->nullable();
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade')->nullable()->index('facmon_facility_id');
+            $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade')->nullable()->index('facmon_monitored_by');
+            $table->string('monitored_date')->nullable()->nullable()->index('facmon_monitored_date');
+            $table->text('remarks')->nullable()->nullable()->index('facmon_remarks');
             // $table->string('facility_img')->nullable();
             $table->timestamps();
         });

@@ -28,9 +28,10 @@ class Equipment extends Model
     protected $guarded = [];
 
     protected $fillable = [
+        'po_number',
         'unit_no',
+        'brand_name',
         'description',
-        'specifications',
         'facility_id',
         'category_id',
         'user_id',
@@ -43,11 +44,11 @@ class Equipment extends Model
         'property_no',
         'control_no',
         'serial_no',
-        'no_of_stocks',
-        'restocking_point',
+        //'no_of_stocks',
+        //'restocking_point',
         'person_liable',
         'remarks',
-        'stock_unit_id',
+        //'stock_unit_id',
         'name',
         'availability'
     ];
@@ -67,11 +68,11 @@ class Equipment extends Model
         return $this->belongsTo(Facility::class);
     }
 
-    public function stockUnit()
+    /*public function stockUnit()
     {
         return $this->belongsTo(StockUnit::class, 'stock_unit_id');
     }
-
+*/
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timezone('Asia/Manila')->format('F d, Y h:i A');
@@ -81,5 +82,8 @@ class Equipment extends Model
     {
         return Carbon::parse($value)->timezone('Asia/Manila')->format('F d, Y h:i A');
     }
-  
+    public function borrowedItems()
+    {
+        return $this->hasMany(BorrowedItems::class);
+    }
 }

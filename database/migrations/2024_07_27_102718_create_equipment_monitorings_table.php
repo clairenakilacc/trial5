@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('equipment_monitorings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('equipment_id')->constrained()->onDelete('cascade');
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
-            $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade');
-            $table->string('remarks')->nullable();
-            $table->string('status')->nullable();
-            $table->string('monitored_date')->default(now()->format('M-d-y'));
+            $table->foreignId('equipment_id')->constrained()->onDelete('cascade')->nullable()->index('equipmon_equipment_id');
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade')->nullable()->index('equipmon_facility_id');
+            $table->foreignId('monitored_by')->constrained('users')->onDelete('cascade')->nullable()->index('equipmon_monitored_by');
+            $table->text('remarks')->nullable()->nullable()->index('equipmon_remarks');
+            $table->string('status')->nullable()->nullable()->index('equipmon_status');
+            $table->string('monitored_date')->default(now()->format('M-d-y'))->nullable()->index('equipmon_monitored_date');
             $table->timestamps();
         });
     }
